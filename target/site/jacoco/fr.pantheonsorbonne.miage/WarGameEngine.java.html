@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WarGameEngine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">l3-poo-war</a> &gt; <a href="index.source.html" class="el_package">fr.pantheonsorbonne.miage</a> &gt; <span class="el_source">WarGameEngine.java</span></div><h1>WarGameEngine.java</h1><pre class="source lang-java linenums">package fr.pantheonsorbonne.miage;
+
+import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
+//import fr.pantheonsorbonne.miage.exception.NoMorePlayerException;
+import fr.pantheonsorbonne.miage.game.Card;
+import fr.pantheonsorbonne.miage.game.Deck;
+
+
+import java.util.*;
+
+/**
+ * this class is a abstract version of the engine, to be used locally on through the network
+ */
+<span class="fc" id="L14">public abstract class WarGameEngine {</span>
+
+    public static final int CARDS_IN_HAND_INITIAL_COUNT = 13;
+<span class="fc" id="L17">    protected final int[] numberParty = new int[2];</span>
+<span class="fc" id="L18">    protected boolean party = false;</span>
+
+    /**
+     * play a war game wit the provided players
+     */
+    public void play()  {
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        for(int i=0;i&lt;numberParty.length;i++) {</span>
+            //send the initial hand to every players
+<span class="nc bnc" id="L26" title="All 2 branches missed.">            for (String playerName : getInitialPlayers()) {</span>
+                //get random cards
+<span class="nc" id="L28">                Card[] cards = Deck.getRandomCards(CARDS_IN_HAND_INITIAL_COUNT);</span>
+                // transform them to String
+<span class="nc" id="L30">                String hand = Card.cardsToString(cards);</span>
+                //send them to this players
+<span class="nc" id="L32">                giveCardsToPlayer(playerName, hand);</span>
+<span class="nc" id="L33">            }</span>
+            // make a queue with all the players
+<span class="nc" id="L35">            final Queue&lt;String&gt; players = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L36">            players.addAll(this.getInitialPlayers());</span>
+<span class="nc" id="L37">            String firstPlayerInRound = &quot;&quot;;</span>
+
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            if (getFirstParty(numberParty)) {</span>
+<span class="nc" id="L41">                firstPlayerInRound = this.getPlayerWithQueenOFHeart();</span>
+
+            } else {
+<span class="nc" id="L44">                firstPlayerInRound = this.getPresident();</span>
+<span class="nc" id="L45">                Collection&lt;Card&gt; presCards = this.getWorstCardsFromPlayer(firstPlayerInRound, 2);</span>
+<span class="nc" id="L46">                Collection&lt;Card&gt; trouCards = this.getBestCardsFromPlayer(this.getTrou(), 2);</span>
+<span class="nc" id="L47">                this.giveCardsToPlayer(trouCards, firstPlayerInRound);</span>
+<span class="nc" id="L48">                this.giveCardsToPlayer(presCards, this.getTrou());</span>
+
+<span class="nc" id="L50">                Collection&lt;Card&gt; vicePresCards = this.getWorstCardsFromPlayer(this.getVicePresident(), 1);</span>
+<span class="nc" id="L51">                Collection&lt;Card&gt; viceTrouCards = this.getBestCardsFromPlayer(this.getViceTrou(), 1);                this.giveCardsToPlayer(trouCards, firstPlayerInRound);</span>
+<span class="nc" id="L52">                this.giveCardsToPlayer(viceTrouCards, this.getVicePresident());</span>
+<span class="nc" id="L53">                this.giveCardsToPlayer(vicePresCards, this.getViceTrou());</span>
+            }
+
+<span class="nc" id="L56">            String currPlayer = firstPlayerInRound;</span>
+<span class="nc" id="L57">            Collection&lt;Card&gt; tapis = Collections.emptyList();</span>
+<span class="nc" id="L58">            int skipped = 0;</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            while (this.getCurrentPlayerCount(players) &gt;= 2) {</span>
+<span class="nc" id="L60">                Collection&lt;Card&gt; playedCardByPlayer = null;</span>
+                try {
+<span class="nc" id="L62">                    playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);</span>
+<span class="nc" id="L63">                } catch (NoMoreCardException e) {</span>
+<span class="nc" id="L64">                    this.addFinishedPlayer(currPlayer);</span>
+<span class="nc" id="L65">                    currPlayer=this.getNextPlayer(currPlayer);</span>
+<span class="nc" id="L66">                }</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (playedCardByPlayer.isEmpty()) {</span>
+<span class="nc" id="L68">                    skipped++;</span>
+                }
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                if (skipped == this.getCurrentPlayerCount(players) - 1) {</span>
+<span class="nc" id="L71">                    tapis = Collections.emptyList();</span>
+<span class="nc" id="L72">                    continue;</span>
+                }
+<span class="nc bnc" id="L74" title="All 2 branches missed.">                if (!this.isTapisFinished(tapis)) {</span>
+<span class="nc" id="L75">                    currPlayer = this.getNextPlayer(currPlayer);</span>
+                } else {
+<span class="nc" id="L77">                    tapis = Collections.emptyList();</span>
+<span class="nc" id="L78">                    continue;</span>
+                }
+
+
+<span class="nc" id="L82">            }</span>
+<span class="nc" id="L83">            this.addFinishedPlayer(currPlayer);</span>
+
+
+            //repeat until only 1 player is left
+        /*while (players.size() &gt; 1) {
+            //these are the cards played by the players on this round
+            Queue&lt;Card&gt; roundDeck = new LinkedList&lt;&gt;();
+
+            //take the first player form the queue
+            String firstPlayerInRound = players.poll();
+            //and put it immediately at the end
+            players.offer(firstPlayerInRound);
+
+            //take the second player from the queue
+            String secondPlayerInRound = players.poll();
+            //and put it back immediately also
+            players.offer(secondPlayerInRound);
+
+            //loop until there is a winner for this round
+            while (true) {
+
+
+                if (playRound(players, firstPlayerInRound, secondPlayerInRound, roundDeck)) break;
+            }
+     
+
+        }   */
+            //since we've left the loop, we have only 1 player left: the winner
+        }
+<span class="nc" id="L112">        String winner = null; //TODO dire qui est le prés</span>
+        //send him the gameover and leave
+<span class="nc" id="L114">        declareWinner(winner);</span>
+<span class="nc" id="L115">        System.out.println(winner + &quot; is the PRESIDENT! &quot;);</span>
+<span class="nc" id="L116">        System.exit(0);</span>
+<span class="nc" id="L117">    }</span>
+
+
+
+    /**
+     * add the player to the collection of the player that have no more cards
+     * @param currPlayer the player that has no more cards
+     */
+    protected abstract void addFinishedPlayer(String currPlayer);
+
+    /**
+     *
+     * @return the number of player still playing to the game
+     */
+    protected abstract int getCurrentPlayerCount(Queue&lt;String&gt; player);
+
+    /**
+     *
+     * @param tapis the current tapis
+     * @return true if no other card can be played (all 2)
+     */
+    protected abstract boolean isTapisFinished(Collection&lt;Card&gt; tapis);
+
+    /**
+     *
+     * @param currPlayer last player to have played
+     * @return the next player to play
+     */
+    protected abstract String getNextPlayer(String currPlayer);
+
+    /**
+     * @param currPlayer the player to play the cards
+     * @param tapis      the current state of the tapis
+     * @return a collection of cards played by the player, the c ollection is empty if the player cannot play
+     */
+    protected abstract Collection&lt;Card&gt; playerPlayCards(String currPlayer, Collection&lt;Card&gt; tapis) throws NoMoreCardException;
+
+    protected abstract Collection&lt;Card&gt; getBestCardsFromPlayer(String trou, int i);
+
+    protected abstract Collection&lt;Card&gt; getWorstCardsFromPlayer(String firstPlayerInRound, int i);
+
+    protected abstract String getPlayerWithQueenOFHeart();
+
+    protected abstract String getPresident();
+
+    protected abstract String getViceTrou();
+
+    protected abstract String getVicePresident();
+
+    protected abstract String getTrou();
+
+
+
+    protected abstract boolean getFirstParty(int [] numberParty);
+
+
+    /**
+     * provide the list of the initial players to play the game
+     *
+     * @return
+     */
+    protected abstract Set&lt;String&gt; getInitialPlayers();
+
+    /**
+     * give some card to a player
+     *
+     * @param playerName the player that will receive the cards
+     * @param hand       the cards as a string (to be converted later)
+     */
+    protected abstract void giveCardsToPlayer(String playerName, String hand);
+
+    /**
+     * Play a single round
+     *
+     * @param players             the queue containing the remaining players
+     * @param firstPlayerInRound  the first contestant in this round
+     * @param secondPlayerInRound the second contestant in this round
+     * @param roundDeck           possible cards left over from previous rounds
+     * @return true if we have a winner for this round, false otherwise
+     */
+    protected boolean playRound(Queue&lt;String&gt; players, String firstPlayerInRound, String secondPlayerInRound, Queue&lt;Card&gt; roundDeck) {
+
+        //int consecutiveNoPlays = 0;
+        //boolean endRound = false;
+
+        //while (!endRound &amp;&amp; consecutiveNoPlays&gt;1) {}
+
+        //while (!players.isEmpty() &amp;&amp; players.size()&gt;0)
+
+        //here, we try to get the first player card
+<span class="nc" id="L207">        Card firstPlayerCard = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (firstPlayerCard == null) {</span>
+<span class="nc" id="L209">            players.remove(firstPlayerInRound);</span>
+<span class="nc" id="L210">            return true;</span>
+        }
+        //here we also get the second player card
+<span class="nc" id="L213">        Card secondPlayerCard = getCardOrGameOver(roundDeck, secondPlayerInRound, firstPlayerInRound);</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (secondPlayerCard == null) {</span>
+<span class="nc" id="L215">            players.remove(secondPlayerInRound);</span>
+<span class="nc" id="L216">            return true;</span>
+        }
+
+
+            
+        /*
+         * if (firstPlayerCard &gt;= lastCardOfRoundDeck) {
+            roundDeck.offer(firstPlayerCard);
+        }
+         */
+        //put the two cards on the roundDeck
+<span class="nc" id="L227">        roundDeck.offer(firstPlayerCard);</span>
+<span class="nc" id="L228">        roundDeck.offer(secondPlayerCard);</span>
+
+        //compute who is the winner
+<span class="nc" id="L231">        String winner = getWinner(firstPlayerInRound, secondPlayerInRound, firstPlayerCard, secondPlayerCard);</span>
+        //if there's a winner, we distribute the card to him
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (winner != null) {</span>
+<span class="nc" id="L234">            giveCardsToPlayer(roundDeck, winner);</span>
+<span class="nc" id="L235">            return true;</span>
+        }
+        //otherwise we do another round.
+<span class="nc" id="L238">        return false;</span>
+    }
+
+    /**
+     * this method must be called when a winner is identified
+     *
+     * @param winner the final winner of the same
+     */
+    protected abstract void declareWinner(String winner);
+
+    /**
+     * get a card from a player. If the player doesn't have a card, it will be declared loser and all the left over cards will be given to his opponent
+     *
+     * @param leftOverCard               card left over from another round
+     * @param cardProviderPlayer         the player that should give a card
+     * @param cardProviderPlayerOpponent the Opponent of this player
+     * @return a card of null if player cardProviderPlayer is gameover
+     */
+    protected abstract Card getCardOrGameOver(Collection&lt;Card&gt; leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent);
+
+    /**
+     * give the winner of a round
+     *
+     * @param contestantA     a contestant
+     * @param contestantB     another contestand
+     * @param contestantACard its card
+     * @param contestantBCard its card
+     * @return the name of the winner or null if it's a tie
+     */
+    protected static String getWinner(String contestantA, String contestantB, Card contestantACard, Card contestantBCard) {
+<span class="nc bnc" id="L268" title="All 2 branches missed.">        if (contestantACard.getValue().getRank() &gt; contestantBCard.getValue().getRank()) {</span>
+<span class="nc" id="L269">            return contestantA;</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        } else if (contestantACard.getValue().getRank() &lt; contestantBCard.getValue().getRank()) {</span>
+<span class="nc" id="L271">            return contestantB;</span>
+        }
+<span class="nc" id="L273">        return null;</span>
+    }
+
+    /**
+     * give some card to a player
+     *
+     * @param playerName the player that will receive the cards
+     * @param cards      the cards as a collection of cards
+     */
+    protected abstract void giveCardsToPlayer(Collection&lt;Card&gt; cards, String playerName);
+
+    /**
+     * get a card from a player
+     *
+     * @param player the player to give card
+     * @return the card from the player
+     * @throws NoMoreCardException if the player does not have a remaining card
+     */
+    protected abstract Card getCardFromPlayer(String player) throws NoMoreCardException;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

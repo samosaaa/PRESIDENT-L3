@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Deck.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">l3-poo-war</a> &gt; <a href="index.source.html" class="el_package">fr.pantheonsorbonne.miage.game</a> &gt; <span class="el_source">Deck.java</span></div><h1>Deck.java</h1><pre class="source lang-java linenums">package fr.pantheonsorbonne.miage.game;
+
+import fr.pantheonsorbonne.miage.enums.CardColor;
+import fr.pantheonsorbonne.miage.enums.CardValue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Represents a Deck of cards
+ */
+public class Deck {
+
+<span class="fc" id="L15">    public List&lt;Card&gt; cartes = new ArrayList&lt;Card&gt;();</span>
+<span class="fc" id="L16">    private final static Random random = new Random();</span>
+<span class="fc" id="L17">    private static int deckSize = CardValue.values().length * CardColor.values().length;</span>
+<span class="fc" id="L18">    private final static Card[] deck = new Card[deckSize];</span>
+
+    static {
+<span class="fc" id="L21">        int cardCount = deckSize;</span>
+        //generate all cards
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (CardColor color : CardColor.values()) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            for (CardValue value : CardValue.values()) {</span>
+<span class="fc" id="L25">                deck[cardCount-- - 1] = new Card(color, value);</span>
+            }
+        }
+        //shuffle them
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (int i = 0; i &lt; deckSize; i++) {</span>
+<span class="fc" id="L30">            int randomIndexToSwap = random.nextInt(deckSize);</span>
+<span class="fc" id="L31">            Card temp = deck[randomIndexToSwap];</span>
+<span class="fc" id="L32">            deck[randomIndexToSwap] = deck[i];</span>
+<span class="fc" id="L33">            deck[i] = temp;</span>
+
+        }
+<span class="fc" id="L36">    }</span>
+
+    /**
+     * disallow instantiation
+     */
+<span class="fc" id="L41">    public Deck() {</span>
+<span class="fc" id="L42">    }</span>
+
+
+
+    /**
+     * return an array of random cards
+     *
+     * @param length the size of the array
+     * @return
+     */
+    public static Card[] getRandomCards(int length) {
+<span class="fc" id="L53">        Card[] result = new Card[length];</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc" id="L55">            result[i] = newRandomCard();</span>
+        }
+<span class="fc" id="L57">        return result;</span>
+    }
+
+    private static Card newRandomCard() {
+<span class="fc" id="L61">        return deck[deckSize-- - 1];</span>
+    }
+
+    public boolean contient(Card carte) {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">		for (Card carteDeck : this.cartes) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">			if (carte.equals(carteDeck)) {</span>
+<span class="nc" id="L67">				return true;</span>
+			}
+<span class="nc" id="L69">		}</span>
+<span class="fc" id="L70">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
