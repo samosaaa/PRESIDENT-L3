@@ -1,11 +1,12 @@
+fr\pantheonsorbonne\miage\PresidentGameNetworkEngine.class
+fr\pantheonsorbonne\miage\PresidentGameNetworkPlayer.class
+fr\pantheonsorbonne\miage\exception\NoMoreCardException.class
 fr\pantheonsorbonne\miage\enums\CardValue.class
-fr\pantheonsorbonne\miage\LocalWarGame.class
 fr\pantheonsorbonne\miage\enums\CardColor.class
 fr\pantheonsorbonne\miage\enums\RoleValue.class
 fr\pantheonsorbonne\miage\game\Card.class
 fr\pantheonsorbonne\miage\exception\NoMorePlayerException.class
 fr\pantheonsorbonne\miage\game\Deck.class
-fr\pantheonsorbonne\miage\WarGameNetworkPlayer.class
-fr\pantheonsorbonne\miage\exception\NoMoreCardException.class
-fr\pantheonsorbonne\miage\WarGameEngine.class
+fr\pantheonsorbonne\miage\LocalPresidentGame.class
+fr\pantheonsorbonne\miage\PresidentGameEngine.class
 fr\pantheonsorbonne\miage\utils\ConsoleColors.class

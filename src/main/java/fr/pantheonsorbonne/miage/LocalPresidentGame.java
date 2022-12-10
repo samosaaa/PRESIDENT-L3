@@ -20,7 +20,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         this.initialPlayers = initialPlayers;
         for (String player : initialPlayers) {
             playerCards.put(player, new ArrayList<>());
-
+            
         }
     }
 
@@ -95,9 +95,10 @@ public class LocalPresidentGame extends PresidentGameEngine {
     private final static Card DAME_COEUR = Card.valueOf("QH");
 
     @Override
-    protected void addFinishedPlayer(String currPlayer) {
+    protected Queue<String> addFinishedPlayer(String currPlayer) {
         Queue<String> finishedPlayer = new LinkedList<>();
         finishedPlayer.offer(currPlayer);
+        return finishedPlayer;
     }
 
     @Override
@@ -107,7 +108,12 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
 
     @Override
-    protected boolean isTapisFinished(Collection<Card> tapis) {        
+    protected boolean isTapisFinished(Collection<Card> tapis) {
+        Object[] tapisOuvert = tapis.toArray();
+        Card lastCardInTapis = (Card) tapisOuvert[-1];
+        if (lastCardInTapis.getValue().getRank() == 2){
+            return true;
+        }
         return false;
     }
 
@@ -150,10 +156,12 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         else{
             List<Card> cardPlayedByPlayer= new ArrayList<>();
-            Object [] tab = tapis.toArray();
-            Card lastCardInTapis = (Card) tab[0];
+            Card lastCardInTapis = null;
+            for (Card element : tapis){
+                element =lastCardInTapis;
+            }
             for (Card c : playersHand){
-                if (c.getValue().getRank() >= lastCardInTapis.getValue().getRank()){
+                if (c.getValue().getRank() > lastCardInTapis.getValue().getRank()){
                     cardPlayedByPlayer.add(c);
 
                 }
@@ -224,7 +232,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return getRole(RoleValue.TROU);
     }
 
-    protected String getRole(RoleValue role) {
+    public String getRole(RoleValue role) {
         for (String playerName : this.playerRole.keySet()) {
             if (this.playerRole.get(playerName).equals(role)) {
                 return playerName;

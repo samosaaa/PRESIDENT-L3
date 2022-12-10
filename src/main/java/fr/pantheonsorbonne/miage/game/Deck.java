@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class Deck {
 
-    public List<Card> cartes = new ArrayList<Card>();
+    public List<Card> cartes = new ArrayList<>();
     private final static Random random = new Random();
     private static int deckSize = CardValue.values().length * CardColor.values().length;
     private final static Card[] deck = new Card[deckSize];

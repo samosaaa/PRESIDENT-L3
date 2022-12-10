@@ -3,35 +3,43 @@
 <span class="fc" id="L3">public enum RoleValue {</span>
 <span class="fc" id="L4">    PRESIDENT(&quot;1&quot;,1), </span>
 <span class="fc" id="L5">    VICE_PRESIDENT(&quot;2&quot;,2),</span>
-<span class="fc" id="L6">    VICE_TROU(&quot;3&quot;,3),</span>
-<span class="fc" id="L7">    TROU(&quot;4&quot;,4);</span>
+<span class="fc" id="L6">    NEUTRE(&quot;3&quot;,3),</span>
+<span class="fc" id="L7">    VICE_TROU(&quot;4&quot;,4),</span>
+<span class="fc" id="L8">    TROU(&quot;5&quot;,5);</span>
 
     final private String stringRepresentation;
     final private int value;
+    static int role;
 
-<span class="fc" id="L12">    RoleValue(String stringRepresentation, int value) {</span>
-<span class="fc" id="L13">        this.stringRepresentation = stringRepresentation;</span>
-<span class="fc" id="L14">        this.value = value;</span>
-<span class="fc" id="L15">    }</span>
+<span class="fc" id="L14">    RoleValue(String stringRepresentation, int value) {</span>
+<span class="fc" id="L15">        this.stringRepresentation = stringRepresentation;</span>
+<span class="fc" id="L16">        this.value = value;</span>
+<span class="fc" id="L17">    }</span>
 
 
     public static RoleValue valueOfStr(String str) {
-<span class="nc bnc" id="L19" title="All 2 branches missed.">        for (RoleValue value : RoleValue.values()) {</span>
-<span class="nc bnc" id="L20" title="All 2 branches missed.">            if (str.equals(value.getStringRepresentation())) {</span>
-<span class="nc" id="L21">                return value;</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        for (RoleValue value : RoleValue.values()) {</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">            if (str.equals(value.getStringRepresentation())) {</span>
+<span class="nc" id="L23">                return value;</span>
             }
         }
 
-<span class="nc" id="L25">        throw new RuntimeException(&quot;failed to parse value&quot;);</span>
+<span class="nc" id="L27">        throw new RuntimeException(&quot;failed to parse value&quot;);</span>
 
     }
 
     public String getStringRepresentation() {
-<span class="nc" id="L30">        return stringRepresentation;</span>
+<span class="nc" id="L32">        return stringRepresentation;</span>
     }
 
     public int getRoleValue() {
-<span class="nc" id="L34">        return value;</span>
+<span class="nc" id="L36">        return value;</span>
     }
+
+    public static void setRoleValue(String player, int value){
+<span class="nc" id="L40">        role = value;</span>
+<span class="nc" id="L41">    }</span>
+
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

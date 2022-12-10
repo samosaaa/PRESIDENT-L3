@@ -142,7 +142,8 @@ public class PresidentGameNetworkEngine extends PresidentGameEngine {
     }
 
     @Override
-    protected void addFinishedPlayer(String currPlayer) {
+    protected Queue<String> addFinishedPlayer(String currPlayer) {
+        return null;
         // TODO Auto-generated method stub
         
     }

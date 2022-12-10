@@ -3,11 +3,13 @@ package fr.pantheonsorbonne.miage.enums;
 public enum RoleValue {
     PRESIDENT("1",1), 
     VICE_PRESIDENT("2",2),
-    VICE_TROU("3",3),
-    TROU("4",4);
+    NEUTRE("3",3),
+    VICE_TROU("4",4),
+    TROU("5",5);
 
     final private String stringRepresentation;
     final private int value;
+    static int role;
 
     RoleValue(String stringRepresentation, int value) {
         this.stringRepresentation = stringRepresentation;
@@ -33,4 +35,10 @@ public enum RoleValue {
     public int getRoleValue() {
         return value;
     }
+
+    public static void setRoleValue(String player, int value){
+        role = value;
+    }
+
+
 }

@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class Deck {
 
-<span class="fc" id="L15">    public List&lt;Card&gt; cartes = new ArrayList&lt;Card&gt;();</span>
+<span class="fc" id="L15">    public List&lt;Card&gt; cartes = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L16">    private final static Random random = new Random();</span>
 <span class="fc" id="L17">    private static int deckSize = CardValue.values().length * CardColor.values().length;</span>
 <span class="fc" id="L18">    private final static Card[] deck = new Card[deckSize];</span>

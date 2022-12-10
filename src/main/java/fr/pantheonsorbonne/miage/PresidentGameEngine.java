@@ -4,8 +4,7 @@ import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 //import fr.pantheonsorbonne.miage.exception.NoMorePlayerException;
 import fr.pantheonsorbonne.miage.game.Card;
 import fr.pantheonsorbonne.miage.game.Deck;
-
-
+import fr.pantheonsorbonne.miage.enums.RoleValue;
 import java.util.*;
 
 /**
@@ -16,6 +15,7 @@ public abstract class PresidentGameEngine {
     public static final int CARDS_IN_HAND_INITIAL_COUNT = 13;
     protected final int[] numberParty = new int[2];
     protected boolean party = false;
+    private Queue<String> winnerPlayer = new LinkedList<>();
 
     /**
      * play a President game wit the provided players
@@ -35,20 +35,18 @@ public abstract class PresidentGameEngine {
             final Queue<String> players = new LinkedList<>();
             players.addAll(this.getInitialPlayers());
             String firstPlayerInRound = "";
-
-
             if (getFirstParty(numberParty)) {
                 firstPlayerInRound = this.getPlayerWithQueenOFHeart();
 
             } else {
-                firstPlayerInRound = this.getPresident();
+                firstPlayerInRound = this.getPresident(); 
                 Collection<Card> presCards = this.getWorstCardsFromPlayer(firstPlayerInRound, 2);
                 Collection<Card> trouCards = this.getBestCardsFromPlayer(this.getTrou(), 2);
                 this.giveCardsToPlayer(trouCards, firstPlayerInRound);
                 this.giveCardsToPlayer(presCards, this.getTrou());
 
                 Collection<Card> vicePresCards = this.getWorstCardsFromPlayer(this.getVicePresident(), 1);
-                Collection<Card> viceTrouCards = this.getBestCardsFromPlayer(this.getViceTrou(), 1);                this.giveCardsToPlayer(trouCards, firstPlayerInRound);
+                Collection<Card> viceTrouCards = this.getBestCardsFromPlayer(this.getViceTrou(), 1);               
                 this.giveCardsToPlayer(viceTrouCards, this.getVicePresident());
                 this.giveCardsToPlayer(vicePresCards, this.getViceTrou());
             }
@@ -60,6 +58,7 @@ public abstract class PresidentGameEngine {
                 Collection<Card> playedCardByPlayer = null;
                 try {
                     playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);
+                    tapis.addAll(playedCardByPlayer);
                 } catch (NoMoreCardException e) {
                     this.addFinishedPlayer(currPlayer);
                     currPlayer=this.getNextPlayer(currPlayer);
@@ -79,37 +78,9 @@ public abstract class PresidentGameEngine {
                 }
 
 
-            }
-            this.addFinishedPlayer(currPlayer);
-
-
-            //repeat until only 1 player is left
-        /*while (players.size() > 1) {
-            //these are the cards played by the players on this round
-            Queue<Card> roundDeck = new LinkedList<>();
-
-            //take the first player form the queue
-            String firstPlayerInRound = players.poll();
-            //and put it immediately at the end
-            players.offer(firstPlayerInRound);
-
-            //take the second player from the queue
-            String secondPlayerInRound = players.poll();
-            //and put it back immediately also
-            players.offer(secondPlayerInRound);
-
-            //loop until there is a winner for this round
-            while (true) {
-
-
-                if (playRound(players, firstPlayerInRound, secondPlayerInRound, roundDeck)) break;
-            }
-     
-
-        }   */
-            //since we've left the loop, we have only 1 player left: the winner
+            }            
         }
-        String winner = null; //TODO dire qui est le prés
+        String winner = winnerPlayer.poll(); 
         //send him the gameover and leave
         declareWinner(winner);
         System.out.println(winner + " is the PRESIDENT! ");
@@ -121,8 +92,9 @@ public abstract class PresidentGameEngine {
     /**
      * add the player to the collection of the player that have no more cards
      * @param currPlayer the player that has no more cards
+     * @return 
      */
-    protected abstract void addFinishedPlayer(String currPlayer);
+    protected abstract Queue<String> addFinishedPlayer(String currPlayer);
 
     /**
      *
