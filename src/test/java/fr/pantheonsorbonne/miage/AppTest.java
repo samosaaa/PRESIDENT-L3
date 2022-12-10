@@ -310,7 +310,7 @@ public class AppTest
         card.add(Card.valueOf("QH"));
         card.add(Card.valueOf("QD"));
         card.add(Card.valueOf("QC"));
-        Collection<Card> tapis = Collections.emptyList();
+        List<Card> tapis = Collections.emptyList();
         
         test5.playerCards.put("J1", cardJ1);
         assertEquals(card, test5.playerPlayCards("J1",tapis));
@@ -334,7 +334,7 @@ public class AppTest
         card.add(Card.valueOf("QH"));
         card.add(Card.valueOf("QD"));
         card.add(Card.valueOf("QS"));
-        Collection<Card> tapis = Collections.emptyList();
+        List<Card> tapis = Collections.emptyList();
         
         test5.playerCards.put("J1", cardJ1);
         assertEquals(card, test5.playerPlayCards("J1",tapis));
@@ -354,7 +354,7 @@ public class AppTest
         ArrayList<Card> card = new ArrayList<>();
         card.add(Card.valueOf("QH"));
         card.add(Card.valueOf("QS"));
-        Collection<Card> tapis = Collections.emptyList();
+        List<Card> tapis = Collections.emptyList();
         
         test5.playerCards.put("J1", cardJ1);
         assertEquals(card, test5.playerPlayCards("J1",tapis));
@@ -374,7 +374,7 @@ public class AppTest
         cardJ1.add(Card.valueOf("KD"));
         ArrayList<Card> card = new ArrayList<>();
         card.add(Card.valueOf("KD"));
-        Collection<Card> tapis = Collections.emptyList();
+        List<Card> tapis = Collections.emptyList();
         
         test5.playerCards.put("J1", cardJ1);
         assertEquals(card, test5.playerPlayCards("J1",tapis));
@@ -393,7 +393,7 @@ public class AppTest
         cardJ1.add(Card.valueOf("4D"));
         cardJ1.add(Card.valueOf("5D"));
         ArrayList<Card> card = new ArrayList<>();
-        Collection<Card> tapis = new ArrayList<>();
+        List<Card> tapis = new ArrayList<>();
         tapis.add(Card.valueOf("9H"));
         assertEquals(card, test5.playerPlayCards("J1",tapis));
     }
@@ -402,22 +402,20 @@ public class AppTest
     public void playerPlayCards5() throws NoMoreCardException{
         HashSet<String> players = new HashSet<>();
         players.add("J1");
+
         var test5 = new LocalPresidentGame(players);
+
         ArrayList<Card> cardJ1 = new ArrayList<>();
-        cardJ1.add(Card.valueOf("KD"));
         cardJ1.add(Card.valueOf("4H"));
         cardJ1.add(Card.valueOf("3S"));
         cardJ1.add(Card.valueOf("4D"));
+        cardJ1.add(Card.valueOf("KD"));
         ArrayList<Card> card = new ArrayList<>();
-        Collection<Card> tapis = new LinkedList<>();
-        card.add(Card.valueOf("KD"));
+        List<Card> tapis = new ArrayList<>();
         tapis.add(Card.valueOf("9H"));
-        for (Card element : tapis){
-            element = Card.valueOf("9D");
-        }
+        card.add(Card.valueOf("KD"));
         assertEquals(card, test5.playerPlayCards("J1",tapis));
     }
-
 
     @Test
     public void giveCardsToPlayer(){
@@ -516,11 +514,10 @@ public class AppTest
     public void isTapisFinished(){
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
-        Collection<Card> tapis = Collections.emptyList();
+        List<Card> tapis = new ArrayList();
+        tapis.add(Card.valueOf("2C"));
         boolean result = test1.isTapisFinished(tapis);
         assertTrue(result);
 
-    }
-
-    
+    }   
 }

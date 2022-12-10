@@ -155,7 +155,7 @@ public class PresidentGameNetworkEngine extends PresidentGameEngine {
     }
 
     @Override
-    protected boolean isTapisFinished(Collection<Card> tapis) {
+    protected boolean isTapisFinished(List<Card> tapis) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -166,11 +166,6 @@ public class PresidentGameNetworkEngine extends PresidentGameEngine {
         return null;
     }
 
-    @Override
-    protected Collection<Card> playerPlayCards(String currPlayer, Collection<Card> tapis) throws NoMoreCardException {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     @Override
     protected Collection<Card> getBestCardsFromPlayer(String trou, int i) {
@@ -212,6 +207,12 @@ public class PresidentGameNetworkEngine extends PresidentGameEngine {
     protected boolean getFirstParty(int[] numberParty) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    protected List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

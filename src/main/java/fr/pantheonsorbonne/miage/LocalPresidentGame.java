@@ -20,12 +20,13 @@ public class LocalPresidentGame extends PresidentGameEngine {
         this.initialPlayers = initialPlayers;
         for (String player : initialPlayers) {
             playerCards.put(player, new ArrayList<>());
-            
+
         }
     }
 
     public static void main(String... args) {
-        LocalPresidentGame localPresidentGame = new LocalPresidentGame(Set.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
+        LocalPresidentGame localPresidentGame = new LocalPresidentGame(
+                Set.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
         localPresidentGame.play();
 
     }
@@ -106,12 +107,18 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return players.size();
     }
 
-
     @Override
-    protected boolean isTapisFinished(Collection<Card> tapis) {
-        Object[] tapisOuvert = tapis.toArray();
-        Card lastCardInTapis = (Card) tapisOuvert[-1];
-        if (lastCardInTapis.getValue().getRank() == 2){
+    protected boolean isTapisFinished(List<Card> tapis) {
+        if(tapis.contains(Card.valueOf("2H"))){
+            return true;
+        }
+        if(tapis.contains(Card.valueOf("2D"))){
+            return true;
+        }
+        if(tapis.contains(Card.valueOf("2S"))){
+            return true;
+        }
+        if(tapis.contains(Card.valueOf("2C"))){
             return true;
         }
         return false;
@@ -138,35 +145,28 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected Collection<Card> playerPlayCards(String currPlayer, Collection<Card> tapis) throws NoMoreCardException {
+    protected List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException {
         List<Card> playersHand = this.playerCards.get(currPlayer);
         if (tapis.isEmpty()) {
-            if(ifCarre(currPlayer)){
+            if (ifCarre(currPlayer)) {
                 return this.cardCarre(currPlayer, playersHand);
-            }
-            else if(ifBrelon(currPlayer)){
+            } else if (ifBrelon(currPlayer)) {
                 return this.cardBrelon(currPlayer, playersHand);
-            }
-            else if(ifPair(currPlayer)){
+            } else if (ifPair(currPlayer)) {
                 return this.cardPair(currPlayer, playersHand);
-            }
-            else{
+            } else {
                 return this.getBestCardsFromPlayer(currPlayer, 1);
             }
-        }
-        else{
-            List<Card> cardPlayedByPlayer= new ArrayList<>();
-            Card lastCardInTapis = null;
-            for (Card element : tapis){
-                element =lastCardInTapis;
-            }
-            for (Card c : playersHand){
-                if (c.getValue().getRank() > lastCardInTapis.getValue().getRank()){
-                    cardPlayedByPlayer.add(c);
+        } else {
+            List<Card> cardPlayedByPlayer = new ArrayList<>();
+            Card lastCardInTapis = tapis.get(tapis.size()-1);
+                for (Card c : playersHand) {
+                    if (c.getValue().getRank() > lastCardInTapis.getValue().getRank()) {
+                        cardPlayedByPlayer.add(c);
 
+                    }
                 }
-            }
-            return  cardPlayedByPlayer;
+            return cardPlayedByPlayer;
         }
     }
 
@@ -242,57 +242,59 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected boolean getFirstParty(int [] numberParty) {
+    protected boolean getFirstParty(int[] numberParty) {
         for (int i = 0; i < numberParty.length; i++) {
             if (i == 0) {
-                party=true;
+                party = true;
             }
-            party=false;
+            party = false;
         }
         return party;
     }
 
-
-    public Collection<Card> cardPair(String player, List<Card> playersHand){
+    public List<Card> cardPair(String player, List<Card> playersHand) {
         playersHand = this.playerCards.get(player);
         List<Card> playerCardPair = new ArrayList<>();
-        for(int i = 0;i<playersHand.size();i++){ 
-        	for(int j = i+1;j<playersHand.size();j++){ 
-        		if(playersHand.get(i).getValue().equals(playersHand.get(j).getValue())){
+        for (int i = 0; i < playersHand.size(); i++) {
+            for (int j = i + 1; j < playersHand.size(); j++) {
+                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
                     playerCardPair.add(playersHand.get(i));
                     playerCardPair.add(playersHand.get(j));
                 }
             }
         }
         return playerCardPair;
-        
-    } 
-    public Collection<Card> cardBrelon(String player, List<Card> playersHand){
+
+    }
+
+    public List<Card> cardBrelon(String player, List<Card> playersHand) {
         playersHand = this.playerCards.get(player);
         List<Card> playerCardBrelon = new ArrayList<>();
-        for(int i = 0;i<playersHand.size();i++){ 
-        	for(int j = i+1;j<playersHand.size();j++){ 
-        		if(playersHand.get(i).getValue().equals(playersHand.get(j).getValue())){
+        for (int i = 0; i < playersHand.size(); i++) {
+            for (int j = i + 1; j < playersHand.size(); j++) {
+                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
                     playerCardBrelon.add(playersHand.get(j));
-                    if(!playerCardBrelon.contains(playersHand.get(i))){
-                        if(playerCardBrelon.contains(playersHand.get(j))){
-                        playerCardBrelon.add(playersHand.get(i));
-                        playerCardBrelon.remove(playersHand.get(j));
+                    if (!playerCardBrelon.contains(playersHand.get(i))) {
+                        if (playerCardBrelon.contains(playersHand.get(j))) {
+                            playerCardBrelon.add(playersHand.get(i));
+                            playerCardBrelon.remove(playersHand.get(j));
                         }
                     }
                 }
             }
         }
         return playerCardBrelon;
-        
-    } 
-    public Collection<Card> cardCarre(String player, List<Card> playersHand){
+
+    }
+
+    public List<Card> cardCarre(String player, List<Card> playersHand) {
         playersHand = this.playerCards.get(player);
         List<Card> playerCardCarre = new ArrayList<>();
-        for(int i = 0;i<playersHand.size();i++){ 
-        	for(int j = i+1;j<playersHand.size();j++){ 
-        		if(playersHand.get(i).getValue().equals(playersHand.get(j).getValue())){
-                    if(!(playerCardCarre.contains(playersHand.get(i))) && !(playerCardCarre.contains(playersHand.get(j)))){                   
+        for (int i = 0; i < playersHand.size(); i++) {
+            for (int j = i + 1; j < playersHand.size(); j++) {
+                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
+                    if (!(playerCardCarre.contains(playersHand.get(i)))
+                            && !(playerCardCarre.contains(playersHand.get(j)))) {
                         playerCardCarre.add(playersHand.get(j));
                         playerCardCarre.add(playersHand.get(i));
                     }
@@ -300,69 +302,68 @@ public class LocalPresidentGame extends PresidentGameEngine {
             }
         }
         return playerCardCarre;
-        
-    }    
 
-    public boolean ifCarre(String player){
+    }
+
+    public boolean ifCarre(String player) {
         List<Card> playersHand = this.playerCards.get(player);
-        int countMax = 1; 
-        for(int i = 0;i<playersHand.size();i++){ 
+        int countMax = 1;
+        for (int i = 0; i < playersHand.size(); i++) {
             int count = 1;
-        	for(int j = i+1;j<playersHand.size();j++){ 
-        		if(playersHand.get(i).getValue().equals(playersHand.get(j).getValue())){ 
-        			count++; 
-        		} 
-        	} 
-            if (count>countMax){
-                countMax=count;
+            for (int j = i + 1; j < playersHand.size(); j++) {
+                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
+                    count++;
+                }
+            }
+            if (count > countMax) {
+                countMax = count;
             }
         }
-        if(countMax == 4) {
+        if (countMax == 4) {
             return true;
         }
         return false;
     }
 
-    public boolean ifBrelon(String player){
+    public boolean ifBrelon(String player) {
         List<Card> playersHand = this.playerCards.get(player);
-        int countMax = 1; 
-        for(int i = 0;i<playersHand.size();i++){ 
+        int countMax = 1;
+        for (int i = 0; i < playersHand.size(); i++) {
             int count = 1;
-        	for(int j = i+1;j<playersHand.size();j++){ 
-        		if(playersHand.get(i).getValue().equals(playersHand.get(j).getValue())){ 
-        			count++; 
-        		} 
-        	} 
-            if (count>countMax){
-                countMax=count;
+            for (int j = i + 1; j < playersHand.size(); j++) {
+                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
+                    count++;
+                }
             }
-        }        
-        if (countMax == 3) { 
-            return true;  
+            if (count > countMax) {
+                countMax = count;
+            }
+        }
+        if (countMax == 3) {
+            return true;
         }
         return false;
     }
 
-    public boolean ifPair(String player){
+    public boolean ifPair(String player) {
         List<Card> playersHand = this.playerCards.get(player);
-        int countMax = 1; 
-        for(int i = 0;i<playersHand.size();i++){ 
+        int countMax = 1;
+        for (int i = 0; i < playersHand.size(); i++) {
             int count = 1;
-        	for(int j = i+1;j<playersHand.size();j++){ 
-        		if(playersHand.get(i).getValue().equals(playersHand.get(j).getValue())){ 
-        			count++; 
-        		} 
-        	} 
-            if (count>countMax){
-                countMax=count;
+            for (int j = i + 1; j < playersHand.size(); j++) {
+                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
+                    count++;
+                }
+            }
+            if (count > countMax) {
+                countMax = count;
             }
         }
-        if (countMax == 2) { 
+        if (countMax == 2) {
 
-            return true; 
-        } 
+            return true;
+        }
         return false;
     }
-
 
 }

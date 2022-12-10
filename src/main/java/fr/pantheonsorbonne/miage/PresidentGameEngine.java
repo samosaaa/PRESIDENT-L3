@@ -52,13 +52,13 @@ public abstract class PresidentGameEngine {
             }
 
             String currPlayer = firstPlayerInRound;
-            Collection<Card> tapis = Collections.emptyList();
+            List<Card> tapis = new ArrayList();
             int skipped = 0;
             while (this.getCurrentPlayerCount(players) >= 2) {
-                Collection<Card> playedCardByPlayer = null;
+                List<Card> playedCardByPlayer = null;
                 try {
                     playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);
-                    tapis.addAll(playedCardByPlayer);
+                    tapis.add((Card) playedCardByPlayer);
                 } catch (NoMoreCardException e) {
                     this.addFinishedPlayer(currPlayer);
                     currPlayer=this.getNextPlayer(currPlayer);
@@ -107,7 +107,7 @@ public abstract class PresidentGameEngine {
      * @param tapis the current tapis
      * @return true if no other card can be played (all 2)
      */
-    protected abstract boolean isTapisFinished(Collection<Card> tapis);
+    protected abstract boolean isTapisFinished(List<Card> tapis);
 
     /**
      *
@@ -121,7 +121,7 @@ public abstract class PresidentGameEngine {
      * @param tapis      the current state of the tapis
      * @return a collection of cards played by the player, the c ollection is empty if the player cannot play
      */
-    protected abstract Collection<Card> playerPlayCards(String currPlayer, Collection<Card> tapis) throws NoMoreCardException;
+    protected abstract List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException;
 
     protected abstract Collection<Card> getBestCardsFromPlayer(String trou, int i);
 
