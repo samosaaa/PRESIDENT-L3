@@ -34,9 +34,9 @@ import java.util.stream.Collectors;
 <span class="nc" id="L34">                System.out.println(&quot;cards have been partagé&quot;);</span>
 <span class="nc" id="L35">            }</span>
             // make a queue with all the players
-<span class="nc" id="L37">            final List&lt;String&gt; players = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L37">            List&lt;String&gt; players = new LinkedList&lt;&gt;();</span>
 <span class="nc" id="L38">            players.addAll(this.getInitialPlayers());</span>
-<span class="nc" id="L39">            System.out.println(&quot;starting a party by adding players in a queue&quot;);</span>
+<span class="nc" id="L39">            System.out.println(&quot;players are in a the List&quot;);</span>
 <span class="nc" id="L40">            String firstPlayerInRound = &quot;&quot;;</span>
             //if (getFirstParty(numberParty)) {
 <span class="nc" id="L42">                firstPlayerInRound = this.getPlayerWithQueenOFHeart();</span>
@@ -58,49 +58,65 @@ import java.util.stream.Collectors;
 
 <span class="nc" id="L59">            String currPlayer = firstPlayerInRound;</span>
 <span class="nc" id="L60">            List&lt;Card&gt; tapis = new LinkedList&lt;&gt;();</span>
-<span class="nc" id="L61">            System.out.println(&quot;the tapis is initialized&quot;);</span>
+<span class="nc" id="L61">            System.out.println(&quot;the tapis is initialized, Lets START&quot;);</span>
 <span class="nc" id="L62">            int skipped = 0;</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">            while (this.getCurrentPlayerCount(players) &gt;= 2) {</span>
-<span class="nc" id="L64">                List&lt;Card&gt; playedCardByPlayer = new LinkedList&lt;&gt;(); </span>
+
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            while (this.getCurrentPlayerCount(players) &gt;= 2) {</span>
+<span class="nc" id="L65">                List&lt;Card&gt; playedCardByPlayer = new LinkedList&lt;&gt;(); </span>
                 try {
-<span class="nc" id="L66">                    playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);</span>
-<span class="nc" id="L67">                    System.out.println(currPlayer+ &quot; decide to play: \n&quot;);</span>
-<span class="nc" id="L68">                    printCards(playedCardByPlayer);</span>
+<span class="nc" id="L67">                    playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);</span>
+<span class="nc" id="L68">                    System.out.println(currPlayer+ &quot; decide to play: \n&quot;);</span>
+<span class="nc" id="L69">                    printCards(playedCardByPlayer);</span>
 
-<span class="nc" id="L70">                    tapis.addAll(playedCardByPlayer);</span>
-<span class="nc" id="L71">                    removeFromPlayerHand(currPlayer, playedCardByPlayer);</span>
-<span class="nc" id="L72">                } catch (NoMoreCardException e) {</span>
-<span class="nc" id="L73">                    this.addFinishedPlayer(currPlayer);</span>
-<span class="nc" id="L74">                    System.out.println(currPlayer+&quot; has no more cards he won&quot;);</span>
-<span class="nc" id="L75">                    players.remove(currPlayer);</span>
+<span class="nc" id="L71">                    tapis.addAll(playedCardByPlayer);</span>
+                    //printCards(tapis);
 
-<span class="nc" id="L77">                    currPlayer=this.getNextPlayer(currPlayer);</span>
-<span class="nc" id="L78">                    continue;</span>
-<span class="nc" id="L79">                }</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">                if (playedCardByPlayer.isEmpty()) {</span>
-<span class="nc" id="L81">                    skipped++;</span>
-<span class="nc" id="L82">                    System.out.println(currPlayer+&quot; has skipped !&quot;);</span>
+<span class="nc" id="L74">                    removeFromPlayerHand(currPlayer, playedCardByPlayer);</span>
+
+<span class="nc" id="L76">                } catch (NoMoreCardException e) {                         //quand le joueur a une main vide</span>
+
+<span class="nc" id="L78">                    System.out.println(currPlayer +&quot; Has no more cards, he's out of the party, and he WON&quot;);</span>
+<span class="nc" id="L79">                    this.addFinishedPlayer(currPlayer);</span>
+
+<span class="nc" id="L81">                    players.remove(currPlayer);</span>
+
+<span class="nc" id="L83">                    currPlayer=this.getNextPlayer(currPlayer,players);</span>
+<span class="nc" id="L84">                    continue;</span>
+<span class="nc" id="L85">                }</span>
+
+
+
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                if (playedCardByPlayer.isEmpty()) {</span>
+<span class="nc" id="L90">                    skipped++;</span>
+<span class="nc" id="L91">                    System.out.println(currPlayer+&quot; has skipped !&quot;);</span>
                 }
-<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (skipped == this.getCurrentPlayerCount(players) - 1) {</span>
-<span class="nc" id="L85">                    tapis.removeAll(tapis);</span>
-<span class="nc" id="L86">                    System.out.println(&quot;everyone has skipped, the tapis is plié&quot;);</span>
-<span class="nc" id="L87">                    continue;</span>
+
+
+                
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                if (skipped == this.getCurrentPlayerCount(players) - 1) {</span>
+<span class="nc" id="L97">                    tapis.removeAll(tapis);</span>
+<span class="nc" id="L98">                    skipped = 0;</span>
+<span class="nc" id="L99">                    System.out.println(&quot;everyone has skipped, the tapis is plié&quot;);</span>
+<span class="nc" id="L100">                    continue;</span>
                 }
-<span class="nc bnc" id="L89" title="All 2 branches missed.">                if (!this.isTapisFinished(tapis)) {</span>
-<span class="nc" id="L90">                    currPlayer = this.getNextPlayer(currPlayer);</span>
-<span class="nc" id="L91">                    System.out.println(&quot;next player to play is &quot;+currPlayer);</span>
+
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                if (!this.isTapisFinished(tapis)) {</span>
+<span class="nc" id="L105">                    currPlayer = this.getNextPlayer(currPlayer,players);</span>
+<span class="nc" id="L106">                    System.out.println(&quot;next player to play is &quot;+currPlayer);</span>
                 } else {
-<span class="nc" id="L93">                    tapis.removeAll(tapis);</span>
+<span class="nc" id="L108">                    tapis.removeAll(tapis);</span>
+<span class="nc" id="L109">                    skipped = 0;</span>
                 }
 
-<span class="nc" id="L96">            }            </span>
+<span class="nc" id="L112">            }            </span>
         //}
-<span class="nc" id="L98">        String winner = winnerPlayer.poll(); </span>
+<span class="nc" id="L114">        String winner = winnerPlayer.poll(); </span>
         //send him the gameover and leave
-<span class="nc" id="L100">        declareWinner(winner);</span>
-<span class="nc" id="L101">        System.out.println(winner + &quot; is the PRESIDENT! &quot;);</span>
-<span class="nc" id="L102">        System.exit(0);</span>
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L116">        declareWinner(winner);</span>
+<span class="nc" id="L117">        System.out.println(winner + &quot; is the PRESIDENT! &quot;);</span>
+<span class="nc" id="L118">        System.exit(0);</span>
+<span class="nc" id="L119">    }</span>
 
 
 
@@ -133,7 +149,7 @@ import java.util.stream.Collectors;
      * @param currPlayer last player to have played
      * @return the next player to play
      */
-    protected abstract String getNextPlayer(String currPlayer);
+    protected abstract String getNextPlayer(String currPlayer, List&lt;String&gt; players);
 
     /**
      * @param currPlayer the player to play the cards
@@ -157,9 +173,9 @@ import java.util.stream.Collectors;
     protected abstract String getTrou();
 
     protected void printCards(List&lt;Card&gt; cards) {
-<span class="nc" id="L160">        System.out.println( cards.stream().map(c -&gt; c.toFancyString()).collect(Collectors.joining(&quot; &quot;)));</span>
-<span class="nc" id="L161">        System.out.println();</span>
-<span class="nc" id="L162">    }</span>
+<span class="nc" id="L176">        System.out.println( cards.stream().map(c -&gt; c.toFancyString()).collect(Collectors.joining(&quot; &quot;)));</span>
+<span class="nc" id="L177">        System.out.println();</span>
+<span class="nc" id="L178">    }</span>
 
     protected abstract boolean getFirstParty(int [] numberParty);
 
@@ -169,7 +185,7 @@ import java.util.stream.Collectors;
      *
      * @return
      */
-    protected abstract Set&lt;String&gt; getInitialPlayers();
+    protected abstract List&lt;String&gt; getInitialPlayers();
 
     /**
      * give some card to a player
@@ -189,7 +205,7 @@ import java.util.stream.Collectors;
      * @return true if we have a winner for this round, false otherwise
      */
     protected boolean playRound(Queue&lt;String&gt; players, String firstPlayerInRound, String secondPlayerInRound, Queue&lt;Card&gt; roundDeck) {
-<span class="nc" id="L192">        return party;</span>
+<span class="nc" id="L208">        return party;</span>
     }
 
     /**
@@ -198,7 +214,6 @@ import java.util.stream.Collectors;
      * @param winner the final winner of the same
      */
     protected abstract void declareWinner(String winner);
-
 
 
     /**
@@ -211,12 +226,12 @@ import java.util.stream.Collectors;
      * @return the name of the winner or null if it's a tie
      */
     protected static String getWinner(String contestantA, String contestantB, Card contestantACard, Card contestantBCard) {
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        if (contestantACard.getValue().getRank() &gt; contestantBCard.getValue().getRank()) {</span>
-<span class="fc" id="L215">            return contestantA;</span>
-<span class="nc bnc" id="L216" title="All 2 branches missed.">        } else if (contestantACard.getValue().getRank() &lt; contestantBCard.getValue().getRank()) {</span>
-<span class="nc" id="L217">            return contestantB;</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        if (contestantACard.getValue().getRank() &gt; contestantBCard.getValue().getRank()) {</span>
+<span class="fc" id="L230">            return contestantA;</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">        } else if (contestantACard.getValue().getRank() &lt; contestantBCard.getValue().getRank()) {</span>
+<span class="fc" id="L232">            return contestantB;</span>
         }
-<span class="nc" id="L219">        return null;</span>
+<span class="nc" id="L234">        return null;</span>
     }
 
     /**
@@ -227,14 +242,7 @@ import java.util.stream.Collectors;
      */
     protected abstract void giveCardsToPlayer(Collection&lt;Card&gt; cards, String playerName);
 
-    /**
-     * get a card from a player
-     *
-     * @param player the player to give card
-     * @return the card from the player
-     * @throws NoMoreCardException if the player does not have a remaining card
-     */
-    protected abstract Card getCardFromPlayer(String player) throws NoMoreCardException;
+
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

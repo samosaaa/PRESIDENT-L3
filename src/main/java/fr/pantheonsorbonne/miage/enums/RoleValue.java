@@ -17,28 +17,8 @@ public enum RoleValue {
     }
 
 
-    public static RoleValue valueOfStr(String str) {
-        for (RoleValue value : RoleValue.values()) {
-            if (str.equals(value.getStringRepresentation())) {
-                return value;
-            }
-        }
-
-        throw new RuntimeException("failed to parse value");
-
-    }
-
-    public String getStringRepresentation() {
-        return stringRepresentation;
-    }
-
     public int getRoleValue() {
         return value;
     }
-
-    public void setRoleValue(int value){
-        this.role = value;
-    } 
-
 
 }
