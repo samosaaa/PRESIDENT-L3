@@ -65,11 +65,11 @@ public class Card {
     }
 
     public String toFancyString() {
-<span class="nc" id="L68">        int rank = this.getValue().ordinal();</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (rank &gt; 10) {</span>
-<span class="nc" id="L70">            rank++;</span>
+<span class="fc" id="L68">        int rank = this.getValue().ordinal();</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (rank &gt; 10) {</span>
+<span class="fc" id="L70">            rank++;</span>
         }
-<span class="nc" id="L72">        return new String(Character.toChars(this.color.getCode() + rank));</span>
+<span class="fc" id="L72">        return new String(Character.toChars(this.color.getCode() + rank));</span>
     }
 
     /**
@@ -83,11 +83,11 @@ public class Card {
 
     @Override
     public int hashCode() {
-<span class="nc" id="L86">        final int prime = 31;</span>
-<span class="nc" id="L87">        int result = 1;</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        result = prime * result + ((color == null) ? 0 : color.hashCode());</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        result = prime * result + ((value == null) ? 0 : value.hashCode());</span>
-<span class="nc" id="L90">        return result;</span>
+<span class="fc" id="L86">        final int prime = 31;</span>
+<span class="fc" id="L87">        int result = 1;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        result = prime * result + ((color == null) ? 0 : color.hashCode());</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        result = prime * result + ((value == null) ? 0 : value.hashCode());</span>
+<span class="fc" id="L90">        return result;</span>
     }
 
     @Override

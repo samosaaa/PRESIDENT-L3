@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.miage;
 import fr.pantheonsorbonne.miage.enums.RoleValue;
 import fr.pantheonsorbonne.miage.exception.NoMoreCardException;
 import fr.pantheonsorbonne.miage.game.Card;
+import io.netty.util.internal.EmptyArrays;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,18 +50,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         System.out.println(winner + " has won!");
     }
 
-    @Override
-    protected Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer,
-            String cardProviderPlayerOpponent) {
-
-        if (!this.playerCards.containsKey(cardProviderPlayer) || this.playerCards.get(cardProviderPlayer).isEmpty()) {
-            this.playerCards.get(cardProviderPlayerOpponent).addAll(leftOverCard);
-            this.playerCards.remove(cardProviderPlayer);
-            return null;
-        } else {
-            return ((Queue<Card>) this.playerCards.get(cardProviderPlayer)).poll();
-        }
-    }
 
     @Override
     protected void giveCardsToPlayer(Collection<Card> roundStack, String winner) {
@@ -68,6 +57,15 @@ public class LocalPresidentGame extends PresidentGameEngine {
         cards.addAll(roundStack);
         Collections.shuffle(cards);
         this.playerCards.get(winner).addAll(cards);
+    }
+
+    @Override
+    protected Card getCardFromPlayer(String player) throws NoMoreCardException {
+        if (this.playerCards.get(player).isEmpty()) {
+            throw new NoMoreCardException();
+        } else {
+            return ((Queue<Card>) this.playerCards.get(player)).poll();
+        }
     }
 
     private final static Card DAME_COEUR = Card.valueOf("QH");
@@ -119,9 +117,13 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return nextPlayerInRound;
     }
 
+    /* (non-Javadoc)
+     * @see fr.pantheonsorbonne.miage.PresidentGameEngine#playerPlayCards(java.lang.String, java.util.List)
+     */
     @Override
     protected List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException {
         List<Card> playersHand = this.playerCards.get(currPlayer);
+        List<Card> cardPlayedByPlayer = new ArrayList<>();
         if (tapis.isEmpty()) {
             if ( ifCarre( playersHand )) {
                 return this.cardCarre(currPlayer, playersHand);
@@ -132,10 +134,8 @@ public class LocalPresidentGame extends PresidentGameEngine {
             } else if (!playersHand.isEmpty()) {
                 //playersHand.removeAll(this.getBestCardsFromPlayer(currPlayer, 1));
                 return this.getBestCardsFromPlayer(currPlayer, 1);
-            }
-        } else {
             
-            List<Card> cardPlayedByPlayer = new ArrayList<>();
+        } else {
             Card lastCardInTapis = tapis.get(tapis.size()-1);
                 for (Card c : playersHand) {
                     if (c.getValue().getRank() >= lastCardInTapis.getValue().getRank()) {
@@ -156,9 +156,11 @@ public class LocalPresidentGame extends PresidentGameEngine {
                     }
                 }
             return cardPlayedByPlayer;
+            }
         }
-        return null;
+        return cardPlayedByPlayer;
     }
+        
 
     @Override
     protected List<Card> getBestCardsFromPlayer(String player, int countCard) {

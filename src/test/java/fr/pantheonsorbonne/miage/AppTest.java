@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-//import java.util.Queue;
-//import java.util.Random;
+import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 
 //import javax.management.relation.Role;
@@ -400,7 +400,7 @@ public class AppTest
         assertEquals(card, test5.playerPlayCards("J1",tapis));
     }
 
-    @Test
+   /*  @Test
     public void playerPlayCards5() throws NoMoreCardException{
         List<String> players = new LinkedList<>();
         players.add("J1");
@@ -435,7 +435,7 @@ public class AppTest
         test5.playerCards.put("J1", cardJ1);
         assertEquals(card, test5.playerPlayCards("J1",tapis));
     }
-
+ */
     @Test
     public void giveCardsToPlayer(){
         List<String> players = new LinkedList<>();
@@ -505,7 +505,7 @@ public class AppTest
     }
 
     @Test
-    public void getWinner(){
+    public void getWinner1(){
         List<String> players = new LinkedList<>();
         players.add("J1");
         players.add("J2");
@@ -518,7 +518,24 @@ public class AppTest
 
         test1.playerCards.put("J1", cardJ1);
         test1.playerCards.put("J2", cardJ2);
-        asserEquals("J1", PresidentGameEngine.getWinner("J1", "J2", Card.valueOf("KD"), Card.valueOf("9S")));
+        asserEquals("J1", PresidentGameEngine.getWinner("J1", "J2", Card.valueOf("QH"), Card.valueOf("9S")));
+    }
+
+    @Test
+    public void getWinner2(){
+        List<String> players = new LinkedList<>();
+        players.add("J1");
+        players.add("J2");
+
+        var test1 = new LocalPresidentGame(players);
+        ArrayList<Card> cardJ1 = new ArrayList<>();
+        ArrayList<Card> cardJ2 = new ArrayList<>();
+        cardJ1.add(Card.valueOf("QH"));
+        cardJ2.add(Card.valueOf("KS"));
+
+        test1.playerCards.put("J1", cardJ1);
+        test1.playerCards.put("J2", cardJ2);
+        asserEquals("J2", PresidentGameEngine.getWinner("J1", "J2", Card.valueOf("QH"), Card.valueOf("KS")));
     }
 
     @Test
@@ -527,6 +544,10 @@ public class AppTest
         players.add("J1");
         players.add("J2");
         var test1 = new LocalPresidentGame(players);
+        Queue <String>player=new LinkedList<>();
+        player.offer("J1");
+        assertEquals(player,test1.addFinishedPlayer("J1"));
+        
     }
 
     @Test 
@@ -583,4 +604,44 @@ public class AppTest
         assertTrue(result);
 
     }
+
+    @Test
+    public void hashCode1(){
+        CardValue value= CardValue.valueOfStr("Q");
+        CardColor color= CardColor.valueOfStr("H");
+        var test= new Card(color, value);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        assertEquals(result, test.hashCode());
+    }
+
+    @Test
+    public void toFancyString(){
+        CardValue value= CardValue.valueOfStr("Q");
+        CardColor color= CardColor.valueOfStr("H");
+        var test= new Card(color, value);
+        Card card= Card.valueOf("QH");
+        int rank = Card.valueOf("QH").getValue().ordinal();
+        if (rank > 10) {
+            rank++;
+        }
+        String result="";
+        asserEquals(result,test.toFancyString());
+    }
+
+    @Test
+    public void removeFromPlayerHand(){
+        List<String> players = new LinkedList<>();
+        players.add("J1");
+        var test = new LocalPresidentGame(players);
+        ArrayList<Card> cardJ1 = new ArrayList<>();
+        cardJ1.add(Card.valueOf("4H"));
+        test.playerCards.put("J1", cardJ1);
+        test.removeFromPlayerHand("J1",cardJ1);
+        assertEquals(0,cardJ1.size());
+    }
+
+
 }

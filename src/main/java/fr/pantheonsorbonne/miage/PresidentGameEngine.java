@@ -61,6 +61,7 @@ public abstract class PresidentGameEngine {
             System.out.println("the tapis is initialized, Lets START\n");
             int skipped = 0;
 
+
             while (this.getCurrentPlayerCount(players) >= 2) {
                 List<Card> playedCardByPlayer = new LinkedList<>(); 
                 if (pollPlayerWithNoMoreCards(currPlayer,players)){
@@ -109,8 +110,6 @@ public abstract class PresidentGameEngine {
                     System.out.println("everyone has skipped, the tapis is plié\n");
                     continue;
                 }
-
-
                 if (!this.isTapisFinished(tapis)) {
                     currPlayer = this.getNextPlayer(currPlayer,players);
                     System.out.println("next player to play is "+currPlayer);
@@ -241,7 +240,7 @@ public abstract class PresidentGameEngine {
      * @return
      */
     protected abstract List<String> getInitialPlayers();
-
+    
     /**
      * give some card to a player
      *
@@ -257,15 +256,6 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void declareWinner(String winner);
 
-    /**
-     * get a card from a player. If the player doesn't have a card, it will be declared loser and all the left over cards will be given to his opponent
-     *
-     * @param leftOverCard               card left over from another round
-     * @param cardProviderPlayer         the player that should give a card
-     * @param cardProviderPlayerOpponent the Opponent of this player
-     * @return a card of null if player cardProviderPlayer is gameover
-     */
-    protected abstract Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent);
 
     /**
      * give the winner of a round
@@ -293,5 +283,13 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void giveCardsToPlayer(Collection<Card> cards, String playerName);
 
+    /**
+     * get a card from a player
+     *
+     * @param player the player to give card
+     * @return the card from the player
+     * @throws NoMoreCardException if the player does not have a remaining card
+     */
+    protected abstract Card getCardFromPlayer(String player) throws NoMoreCardException;
 
 }

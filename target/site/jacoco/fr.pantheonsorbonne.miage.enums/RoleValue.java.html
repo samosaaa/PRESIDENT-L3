@@ -17,29 +17,9 @@
 <span class="fc" id="L17">    }</span>
 
 
-    public static RoleValue valueOfStr(String str) {
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        for (RoleValue value : RoleValue.values()) {</span>
-<span class="nc bnc" id="L22" title="All 2 branches missed.">            if (str.equals(value.getStringRepresentation())) {</span>
-<span class="nc" id="L23">                return value;</span>
-            }
-        }
-
-<span class="nc" id="L27">        throw new RuntimeException(&quot;failed to parse value&quot;);</span>
-
-    }
-
-    public String getStringRepresentation() {
-<span class="nc" id="L32">        return stringRepresentation;</span>
-    }
-
     public int getRoleValue() {
-<span class="nc" id="L36">        return value;</span>
+<span class="nc" id="L21">        return value;</span>
     }
-
-    public void setRoleValue(int value){
-<span class="nc" id="L40">        this.role = value;</span>
-<span class="nc" id="L41">    } </span>
-
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
