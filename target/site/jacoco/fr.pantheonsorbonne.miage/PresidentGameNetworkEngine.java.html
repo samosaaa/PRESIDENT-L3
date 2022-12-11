@@ -155,7 +155,7 @@ public class PresidentGameNetworkEngine extends PresidentGameEngine {
     }
 
     @Override
-    protected boolean isTapisFinished(Collection&lt;Card&gt; tapis) {
+    protected boolean isTapisFinished(List&lt;Card&gt; tapis) {
         // TODO Auto-generated method stub
 <span class="nc" id="L160">        return false;</span>
     }
@@ -166,52 +166,53 @@ public class PresidentGameNetworkEngine extends PresidentGameEngine {
 <span class="nc" id="L166">        return null;</span>
     }
 
-    @Override
-    protected Collection&lt;Card&gt; playerPlayCards(String currPlayer, Collection&lt;Card&gt; tapis) throws NoMoreCardException {
-        // TODO Auto-generated method stub
-<span class="nc" id="L172">        return null;</span>
-    }
 
     @Override
     protected Collection&lt;Card&gt; getBestCardsFromPlayer(String trou, int i) {
         // TODO Auto-generated method stub
-<span class="nc" id="L178">        return null;</span>
+<span class="nc" id="L173">        return null;</span>
     }
 
     @Override
     protected Collection&lt;Card&gt; getWorstCardsFromPlayer(String firstPlayerInRound, int i) {
         // TODO Auto-generated method stub
-<span class="nc" id="L184">        return null;</span>
+<span class="nc" id="L179">        return null;</span>
     }
 
     @Override
     protected String getPresident() {
         // TODO Auto-generated method stub
-<span class="nc" id="L190">        return null;</span>
+<span class="nc" id="L185">        return null;</span>
     }
 
     @Override
     protected String getViceTrou() {
         // TODO Auto-generated method stub
-<span class="nc" id="L196">        return null;</span>
+<span class="nc" id="L191">        return null;</span>
     }
 
     @Override
     protected String getVicePresident() {
         // TODO Auto-generated method stub
-<span class="nc" id="L202">        return null;</span>
+<span class="nc" id="L197">        return null;</span>
     }
 
     @Override
     protected String getTrou() {
         // TODO Auto-generated method stub
-<span class="nc" id="L208">        return null;</span>
+<span class="nc" id="L203">        return null;</span>
     }
 
     @Override
     protected boolean getFirstParty(int[] numberParty) {
         // TODO Auto-generated method stub
-<span class="nc" id="L214">        return false;</span>
+<span class="nc" id="L209">        return false;</span>
+    }
+
+    @Override
+    protected List&lt;Card&gt; playerPlayCards(String currPlayer, List&lt;Card&gt; tapis) throws NoMoreCardException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L215">        return null;</span>
     }
 
 }

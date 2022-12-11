@@ -161,9 +161,15 @@ public class LocalPresidentGame extends PresidentGameEngine {
             List<Card> cardPlayedByPlayer = new ArrayList<>();
             Card lastCardInTapis = tapis.get(tapis.size()-1);
                 for (Card c : playersHand) {
-                    if (c.getValue().getRank() > lastCardInTapis.getValue().getRank()) {
+                    if (c.getValue().getRank() >= lastCardInTapis.getValue().getRank()) {
                         cardPlayedByPlayer.add(c);
 
+                    }
+                }
+                while(cardPlayedByPlayer.size()>1){
+                    Card cardMin=cardPlayedByPlayer.get(0);
+                    for(int i=0;i<cardPlayedByPlayer.size();i++){
+                        
                     }
                 }
             return cardPlayedByPlayer;

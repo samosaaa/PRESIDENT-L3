@@ -402,18 +402,17 @@ public class AppTest
     public void playerPlayCards5() throws NoMoreCardException{
         HashSet<String> players = new HashSet<>();
         players.add("J1");
-
         var test5 = new LocalPresidentGame(players);
-
         ArrayList<Card> cardJ1 = new ArrayList<>();
         cardJ1.add(Card.valueOf("4H"));
         cardJ1.add(Card.valueOf("3S"));
-        cardJ1.add(Card.valueOf("4D"));
+        cardJ1.add(Card.valueOf("5D"));
         cardJ1.add(Card.valueOf("KD"));
         ArrayList<Card> card = new ArrayList<>();
         List<Card> tapis = new ArrayList<>();
         tapis.add(Card.valueOf("9H"));
         card.add(Card.valueOf("KD"));
+        test5.playerCards.put("J1", cardJ1);
         assertEquals(card, test5.playerPlayCards("J1",tapis));
     }
 
@@ -511,7 +510,7 @@ public class AppTest
     }
 
     @Test 
-    public void isTapisFinished(){
+    public void isTapisFinished1(){
         HashSet<String> players = new HashSet<>();
         var test1 = new LocalPresidentGame(players);
         List<Card> tapis = new ArrayList();
@@ -520,4 +519,48 @@ public class AppTest
         assertTrue(result);
 
     }   
+
+    @Test 
+    public void isTapisFinished2(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        List<Card> tapis = new ArrayList();
+        tapis.add(Card.valueOf("2D"));
+        boolean result = test1.isTapisFinished(tapis);
+        assertTrue(result);
+
+    }
+
+    @Test 
+    public void isTapisFinished3(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        List<Card> tapis = new ArrayList();
+        tapis.add(Card.valueOf("2H"));
+        boolean result = test1.isTapisFinished(tapis);
+        assertTrue(result);
+
+    }
+
+    @Test 
+    public void isTapisFinished4(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        List<Card> tapis = new ArrayList();
+        tapis.add(Card.valueOf("2S"));
+        boolean result = test1.isTapisFinished(tapis);
+        assertTrue(result);
+
+    }
+
+    @Test 
+    public void isTapisFinished(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        List<Card> tapis = new ArrayList();
+        tapis.add(Card.valueOf("3C"));
+        boolean result = !test1.isTapisFinished(tapis);
+        assertTrue(result);
+
+    }
 }
