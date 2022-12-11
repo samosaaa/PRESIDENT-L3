@@ -148,11 +148,11 @@ public class LocalPresidentGame extends PresidentGameEngine {
     protected List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException {
         List<Card> playersHand = this.playerCards.get(currPlayer);
         if (tapis.isEmpty()) {
-            if (ifCarre(currPlayer)) {
+            if (ifCarre( playersHand )) {
                 return this.cardCarre(currPlayer, playersHand);
-            } else if (ifBrelon(currPlayer)) {
+            } else if ( ifBrelon( playersHand )) {
                 return this.cardBrelon(currPlayer, playersHand);
-            } else if (ifPair(currPlayer)) {
+            } else if ( ifPair( playersHand )) {
                 return this.cardPair(currPlayer, playersHand);
             } else {
                 return this.getBestCardsFromPlayer(currPlayer, 1);
@@ -253,7 +253,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     public List<Card> cardPair(String player, List<Card> playersHand) {
-        playersHand = this.playerCards.get(player);
+        //playersHand = this.playerCards.get(player);
         List<Card> playerCardPair = new ArrayList<>();
         for (int i = 0; i < playersHand.size(); i++) {
             for (int j = i + 1; j < playersHand.size(); j++) {
@@ -305,8 +305,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     }
 
-    public boolean ifCarre(String player) {
-        List<Card> playersHand = this.playerCards.get(player);
+    public boolean ifCarre(List<Card> playersHand ) {
         int countMax = 1;
         for (int i = 0; i < playersHand.size(); i++) {
             int count = 1;
@@ -325,8 +324,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return false;
     }
 
-    public boolean ifBrelon(String player) {
-        List<Card> playersHand = this.playerCards.get(player);
+    public boolean ifBrelon(List<Card> playersHand) {
         int countMax = 1;
         for (int i = 0; i < playersHand.size(); i++) {
             int count = 1;
@@ -345,8 +343,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         return false;
     }
 
-    public boolean ifPair(String player) {
-        List<Card> playersHand = this.playerCards.get(player);
+    public boolean ifPair(List<Card> playersHand) {
         int countMax = 1;
         for (int i = 0; i < playersHand.size(); i++) {
             int count = 1;

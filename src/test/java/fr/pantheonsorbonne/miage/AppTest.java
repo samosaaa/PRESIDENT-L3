@@ -201,7 +201,7 @@ public class AppTest
 
         test5.playerCards.put("J1", cardJ1);
 
-        assertEquals(true, test5.ifCarre("J1"));
+        assertEquals(true, test5.ifCarre(test5.playerCards.get("J1")));
 
     }
 
@@ -217,7 +217,7 @@ public class AppTest
 
         test5.playerCards.put("J1", cardJ1);
 
-        assertEquals(true, test5.ifBrelon("J1"));
+        assertEquals(true, test5.ifBrelon(test5.playerCards.get("J1")));
 
     }
 
@@ -232,7 +232,7 @@ public class AppTest
 
         test5.playerCards.put("J1", cardJ1);
 
-        assertEquals(true, test5.ifPair("J1"));
+        assertEquals(true, test5.ifPair(test5.playerCards.get("J1")));
 
     }
 

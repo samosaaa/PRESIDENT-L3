@@ -9,7 +9,7 @@ public enum RoleValue {
 
     final private String stringRepresentation;
     final private int value;
-    static int role;
+    int role;
 
     RoleValue(String stringRepresentation, int value) {
         this.stringRepresentation = stringRepresentation;
@@ -36,9 +36,9 @@ public enum RoleValue {
         return value;
     }
 
-    public static void setRoleValue(String player, int value){
-        role = value;
-    }
+    public void setRoleValue(int value){
+        this.role = value;
+    } 
 
 
 }
