@@ -161,9 +161,21 @@ public class LocalPresidentGame extends PresidentGameEngine {
             List<Card> cardPlayedByPlayer = new ArrayList<>();
             Card lastCardInTapis = tapis.get(tapis.size()-1);
                 for (Card c : playersHand) {
-                    if (c.getValue().getRank() > lastCardInTapis.getValue().getRank()) {
+                    if (c.getValue().getRank() >= lastCardInTapis.getValue().getRank()) {
                         cardPlayedByPlayer.add(c);
-
+                       }
+                }
+                while(cardPlayedByPlayer.size()!=1 && !cardPlayedByPlayer.isEmpty()){
+                    Card cardMin=cardPlayedByPlayer.get(0);
+                    for(int i=1;i<cardPlayedByPlayer.size();i++){
+                            if(cardPlayedByPlayer.get(i).getValue().getRank()<=cardMin.getValue().getRank()){
+                                Card cardAux=cardPlayedByPlayer.get(i);
+                                cardPlayedByPlayer.remove(cardMin);
+                                cardMin= cardAux;
+                            }
+                            else{
+                                cardPlayedByPlayer.remove(cardPlayedByPlayer.get(i));
+                            }
                     }
                 }
             return cardPlayedByPlayer;
@@ -182,6 +194,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
             bestCard.add(currBestCard);
+            playersHand.remove(currBestCard);
         }
         return bestCard;
     }
@@ -198,6 +211,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
             badCard.add(currBadCard);
+            playersHand.remove(currBadCard);
         }
         return badCard;
     }
