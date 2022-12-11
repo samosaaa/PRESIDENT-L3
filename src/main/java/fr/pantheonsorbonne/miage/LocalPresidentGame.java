@@ -45,22 +45,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected boolean playRound(Queue<String> players, String playerA, String playerB, Queue<Card> roundDeck) {
-        System.out.println("New round:");
-        System.out
-                .println(
-                        this.playerCards
-                                .keySet().stream().filter(p -> !this.playerCards.get(p).isEmpty()).map(
-                                        p -> p + " has "
-                                                + this.playerCards.get(p).stream().map(c -> c.toFancyString())
-                                                        .collect(Collectors.joining(" ")))
-                                .collect(Collectors.joining("\n")));
-        System.out.println();
-        return super.playRound(players, playerA, playerB, roundDeck);
-
-    }
-
-    @Override
     protected void declareWinner(String winner) {
         System.out.println(winner + " has won!");
     }
@@ -86,15 +70,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
         this.playerCards.get(winner).addAll(cards);
     }
 
-    @Override
-    protected Card getCardFromPlayer(String player) throws NoMoreCardException {
-        if (this.playerCards.get(player).isEmpty()) {
-            throw new NoMoreCardException();
-        } else {
-            return ((Queue<Card>) this.playerCards.get(player)).poll();
-        }
-    }
-
     private final static Card DAME_COEUR = Card.valueOf("QH");
 
     @Override
@@ -102,6 +77,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         this.finishedPlayer.offer(currPlayer);
         return this.finishedPlayer;
     }
+    
 
     @Override
     protected int getCurrentPlayerCount(List<String> players) {
@@ -153,10 +129,10 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 return this.cardBrelon(currPlayer, playersHand);
             } else if ( ifPair( playersHand )) {
                 return this.cardPair(currPlayer, playersHand);
-            }
+            } else if (!playersHand.isEmpty()) {
                 //playersHand.removeAll(this.getBestCardsFromPlayer(currPlayer, 1));
                 return this.getBestCardsFromPlayer(currPlayer, 1);
-            
+            }
         } else {
             
             List<Card> cardPlayedByPlayer = new ArrayList<>();
@@ -181,7 +157,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             return cardPlayedByPlayer;
         }
-        
+        return null;
     }
 
     @Override
@@ -193,7 +169,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
             i++;
             Card currBestCard = playersHand.get(0);
             for (Card c : playersHand) {
-                if (c.getValue().getRank() > currBestCard.getValue().getRank()) {
+                if (c.getValue().getRank() >= currBestCard.getValue().getRank()) {
                     currBestCard = c;
                 }
             }
@@ -203,7 +179,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected Collection<Card> getWorstCardsFromPlayer(String player, int countCard) {
+    protected List<Card> getWorstCardsFromPlayer(String player, int countCard) {
         List<Card> badCard = new ArrayList<>();
         List<Card> playersHand = this.playerCards.get(player);
         int i=0;
@@ -219,6 +195,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         return badCard;
     }
+
 
     @Override
     protected String getPlayerWithQueenOFHeart() {
@@ -259,6 +236,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         throw new RuntimeException();
     }
 
+
     @Override
     protected boolean getFirstParty(int[] numberParty) {
         for (int i = 0; i < numberParty.length; i++) {
@@ -269,6 +247,19 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         return party;
     }
+
+    @Override
+    protected void printCards(List<Card> cards) {
+        System.out.println( cards.stream().map(c -> c.toFancyString()).collect(Collectors.joining(" ")));
+        System.out.println();
+    }
+
+    @Override
+    protected void printCards( String playerName) {
+        System.out.println( this.playerCards.get(playerName).stream().map(c -> c.toFancyString()).collect(Collectors.joining(" ")));
+        System.out.println();
+    }
+
 
     public List<Card> cardPair(String player, List<Card> playersHand) {
         playersHand = this.playerCards.get(player);
@@ -395,5 +386,14 @@ public class LocalPresidentGame extends PresidentGameEngine {
         this.playerCards.get(currPlayer).removeAll(playedCardByPlayer);
     }
 
+    @Override
+    protected boolean pollPlayerWithNoMoreCards(String currPlayer, List<String> players) {
+        if ( this.playerCards.get(currPlayer).isEmpty() ) {
+            players.remove(currPlayer);
+            return true;
+        }
+        return false;
+
+    }
 
 }

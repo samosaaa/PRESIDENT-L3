@@ -58,45 +58,55 @@ public abstract class PresidentGameEngine {
 
             String currPlayer = firstPlayerInRound;
             List<Card> tapis = new LinkedList<>();
-            System.out.println("the tapis is initialized, Lets START");
+            System.out.println("the tapis is initialized, Lets START\n");
             int skipped = 0;
 
             while (this.getCurrentPlayerCount(players) >= 2) {
                 List<Card> playedCardByPlayer = new LinkedList<>(); 
-                try {
-                    playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);
-                    System.out.println(currPlayer+ " decide to play: \n");
-                    printCards(playedCardByPlayer);
-
-                    tapis.addAll(playedCardByPlayer);
-                    //printCards(tapis);
-
-                    removeFromPlayerHand(currPlayer, playedCardByPlayer);
-
-                } catch (NoMoreCardException e) {                         //quand le joueur a une main vide
-
-                    System.out.println(currPlayer +" Has no more cards, he's out of the party, and he WON");
+                if (pollPlayerWithNoMoreCards(currPlayer,players)){
+                    System.out.println(currPlayer +" Has no more cards, he HAS WON the party, and he's the PRESIDENT");
                     this.addFinishedPlayer(currPlayer);
-
-                    players.remove(currPlayer);
 
                     currPlayer=this.getNextPlayer(currPlayer,players);
                     continue;
                 }
+                
+                try {
+                    playedCardByPlayer = playerPlayCards(currPlayer, tapis);
+                    System.out.println("Les cartes de: "+currPlayer);
+                    printCards(currPlayer);
+                    System.out.println(currPlayer+ " decide to play: \n");
+                    printCards(playedCardByPlayer);
 
+                    tapis.addAll(playedCardByPlayer);
+                    System.out.println("cards added to the tapis");
+                    printCards(tapis);
+
+                    removeFromPlayerHand(currPlayer, playedCardByPlayer);
+                    System.out.println("Le reste de ses Cartes");
+                    printCards(currPlayer);
+
+                } catch (NoMoreCardException e) {                         //quand le joueur a une main vide
+
+                    // System.out.println(currPlayer +" Has no more cards, he's out of the party, and he WON");
+                    // this.addFinishedPlayer(currPlayer);
+                    // players.remove(currPlayer);
+
+                    // currPlayer=this.getNextPlayer(currPlayer,players);
+                    // continue;
+                }
 
 
                 if (playedCardByPlayer.isEmpty()) {
                     skipped++;
-                    System.out.println(currPlayer+" has skipped !");
+                    System.out.println("____________________"+currPlayer+" has skipped !\n");
                 }
-
 
                 
                 if (skipped == this.getCurrentPlayerCount(players) - 1) {
                     tapis.removeAll(tapis);
                     skipped = 0;
-                    System.out.println("everyone has skipped, the tapis is plié");
+                    System.out.println("everyone has skipped, the tapis is plié\n");
                     continue;
                 }
 
@@ -119,7 +129,13 @@ public abstract class PresidentGameEngine {
     }
 
 
+    protected abstract boolean pollPlayerWithNoMoreCards(String currPlayer, List<String> players);
 
+    /**
+     * has acces to the player's hands to remove the throwed cards 
+     * @param currPlayer
+     * @param playedCardByPlayer
+     */
     protected abstract void removeFromPlayerHand(String currPlayer, List<Card> playedCardByPlayer);
 
 
@@ -158,24 +174,63 @@ public abstract class PresidentGameEngine {
      */
     protected abstract List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException;
 
-    protected abstract Collection<Card> getBestCardsFromPlayer(String trou, int i);
+    /**
+     * get the best combination of i numbers of cards from trou
+     * @param trou
+     * @param i
+     * @return the best/bests card/cards from the trou
+     */
+    protected abstract List<Card> getBestCardsFromPlayer(String trou, int i);
 
-    protected abstract Collection<Card> getWorstCardsFromPlayer(String firstPlayerInRound, int i);
+    /**
+     * get the worst combination of i numbers of cards from the firstPlayerInRound
+     * @param firstPlayerInRound
+     * @param i
+     * @return the worst card/cards from the firstPlayerInRound
+     */
+    protected abstract List<Card> getWorstCardsFromPlayer(String firstPlayerInRound, int i);
 
+    /**
+     * 
+     * @return the player who has the Queen Of Heart in his hand
+     */
     protected abstract String getPlayerWithQueenOFHeart();
 
+    /**
+     * 
+     * @return the president of the last party
+     */
     protected abstract String getPresident();
 
+    /**
+     * 
+     * @return the Vice Trou of the last party
+     */
     protected abstract String getViceTrou();
 
+    /**
+     * 
+     * @return the Vice president of the last party
+     */
     protected abstract String getVicePresident();
-
+    
+    /**
+     * 
+     * @return the Trou of the last party
+     */
     protected abstract String getTrou();
 
-    protected void printCards(List<Card> cards) {
-        System.out.println( cards.stream().map(c -> c.toFancyString()).collect(Collectors.joining(" ")));
-        System.out.println();
-    }
+    /**
+     * discard cards given in argument
+     * @param cards
+     */
+    protected abstract void printCards(List<Card> cards);
+
+    /**
+     * discard the hand of the player named playerName
+     * @param playerName
+     */
+    protected abstract void printCards(String playerName);
 
     protected abstract boolean getFirstParty(int [] numberParty);
 
@@ -194,19 +249,6 @@ public abstract class PresidentGameEngine {
      * @param hand       the cards as a string (to be converted later)
      */
     protected abstract void giveCardsToPlayer(String playerName, String hand);
-
-    /**
-     * Play a single round
-     *
-     * @param players             the queue containing the remaining players
-     * @param firstPlayerInRound  the first contestant in this round
-     * @param secondPlayerInRound the second contestant in this round
-     * @param roundDeck           possible cards left over from previous rounds
-     * @return true if we have a winner for this round, false otherwise
-     */
-    protected boolean playRound(Queue<String> players, String firstPlayerInRound, String secondPlayerInRound, Queue<Card> roundDeck) {
-        return party;
-    }
 
     /**
      * this method must be called when a winner is identified
@@ -251,13 +293,5 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void giveCardsToPlayer(Collection<Card> cards, String playerName);
 
-    /**
-     * get a card from a player
-     *
-     * @param player the player to give card
-     * @return the card from the player
-     * @throws NoMoreCardException if the player does not have a remaining card
-     */
-    protected abstract Card getCardFromPlayer(String player) throws NoMoreCardException;
 
 }
