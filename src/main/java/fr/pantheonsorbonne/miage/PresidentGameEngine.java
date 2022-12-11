@@ -35,10 +35,11 @@ public abstract class PresidentGameEngine {
             final Queue<String> players = new LinkedList<>();
             players.addAll(this.getInitialPlayers());
             String firstPlayerInRound = "";
-            if (getFirstParty(numberParty)) {
+            //if (getFirstParty(numberParty)) {
                 firstPlayerInRound = this.getPlayerWithQueenOFHeart();
 
-            } /* else {
+            //} 
+            /* else {
                 firstPlayerInRound = this.getPresident(); 
                 Collection<Card> presCards = this.getWorstCardsFromPlayer(firstPlayerInRound, 2);
                 Collection<Card> trouCards = this.getBestCardsFromPlayer(this.getTrou(), 2);
@@ -52,13 +53,13 @@ public abstract class PresidentGameEngine {
             } */
 
             String currPlayer = firstPlayerInRound;
-            List<Card> tapis = new ArrayList();
+            List<Card> tapis = new LinkedList<>();
             int skipped = 0;
             while (this.getCurrentPlayerCount(players) >= 2) {
-                List<Card> playedCardByPlayer = null;
+                List<Card> playedCardByPlayer = new LinkedList<>(); 
                 try {
                     playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);
-                    tapis.add((Card) playedCardByPlayer);
+                    tapis.add(playedCardByPlayer);
                 } catch (NoMoreCardException e) {
                     this.addFinishedPlayer(currPlayer);
                     currPlayer=this.getNextPlayer(currPlayer);
