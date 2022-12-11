@@ -21,7 +21,7 @@ public abstract class PresidentGameEngine {
      * play a President game wit the provided players
      */
     public void play()  {
-        for(int i=0;i<numberParty.length;i++) {
+        //for ( int i=0; i<numberParty.length; i++ ) {
             //send the initial hand to every players
             for (String playerName : getInitialPlayers()) {
                 //get random cards
@@ -38,7 +38,7 @@ public abstract class PresidentGameEngine {
             if (getFirstParty(numberParty)) {
                 firstPlayerInRound = this.getPlayerWithQueenOFHeart();
 
-            } else {
+            } /* else {
                 firstPlayerInRound = this.getPresident(); 
                 Collection<Card> presCards = this.getWorstCardsFromPlayer(firstPlayerInRound, 2);
                 Collection<Card> trouCards = this.getBestCardsFromPlayer(this.getTrou(), 2);
@@ -49,7 +49,7 @@ public abstract class PresidentGameEngine {
                 Collection<Card> viceTrouCards = this.getBestCardsFromPlayer(this.getViceTrou(), 1);               
                 this.giveCardsToPlayer(viceTrouCards, this.getVicePresident());
                 this.giveCardsToPlayer(vicePresCards, this.getViceTrou());
-            }
+            } */
 
             String currPlayer = firstPlayerInRound;
             List<Card> tapis = new ArrayList();
@@ -79,7 +79,7 @@ public abstract class PresidentGameEngine {
 
 
             }            
-        }
+        //}
         String winner = winnerPlayer.poll(); 
         //send him the gameover and leave
         declareWinner(winner);
@@ -167,47 +167,7 @@ public abstract class PresidentGameEngine {
      * @return true if we have a winner for this round, false otherwise
      */
     protected boolean playRound(Queue<String> players, String firstPlayerInRound, String secondPlayerInRound, Queue<Card> roundDeck) {
-
-        //int consecutiveNoPlays = 0;
-        //boolean endRound = false;
-
-        //while (!endRound && consecutiveNoPlays>1) {}
-
-        //while (!players.isEmpty() && players.size()>0)
-
-        //here, we try to get the first player card
-        Card firstPlayerCard = getCardOrGameOver(roundDeck, firstPlayerInRound, secondPlayerInRound);
-        if (firstPlayerCard == null) {
-            players.remove(firstPlayerInRound);
-            return true;
-        }
-        //here we also get the second player card
-        Card secondPlayerCard = getCardOrGameOver(roundDeck, secondPlayerInRound, firstPlayerInRound);
-        if (secondPlayerCard == null) {
-            players.remove(secondPlayerInRound);
-            return true;
-        }
-
-
-            
-        /*
-         * if (firstPlayerCard >= lastCardOfRoundDeck) {
-            roundDeck.offer(firstPlayerCard);
-        }
-         */
-        //put the two cards on the roundDeck
-        roundDeck.offer(firstPlayerCard);
-        roundDeck.offer(secondPlayerCard);
-
-        //compute who is the winner
-        String winner = getWinner(firstPlayerInRound, secondPlayerInRound, firstPlayerCard, secondPlayerCard);
-        //if there's a winner, we distribute the card to him
-        if (winner != null) {
-            giveCardsToPlayer(roundDeck, winner);
-            return true;
-        }
-        //otherwise we do another round.
-        return false;
+        return party;
     }
 
     /**

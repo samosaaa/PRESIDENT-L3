@@ -148,11 +148,11 @@ public class LocalPresidentGame extends PresidentGameEngine {
     protected List&lt;Card&gt; playerPlayCards(String currPlayer, List&lt;Card&gt; tapis) throws NoMoreCardException {
 <span class="fc" id="L149">        List&lt;Card&gt; playersHand = this.playerCards.get(currPlayer);</span>
 <span class="fc bfc" id="L150" title="All 2 branches covered.">        if (tapis.isEmpty()) {</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">            if (ifCarre(currPlayer)) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            if (ifCarre( playersHand )) {</span>
 <span class="fc" id="L152">                return this.cardCarre(currPlayer, playersHand);</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">            } else if (ifBrelon(currPlayer)) {</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">            } else if ( ifBrelon( playersHand )) {</span>
 <span class="fc" id="L154">                return this.cardBrelon(currPlayer, playersHand);</span>
-<span class="fc bfc" id="L155" title="All 2 branches covered.">            } else if (ifPair(currPlayer)) {</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            } else if ( ifPair( playersHand )) {</span>
 <span class="fc" id="L156">                return this.cardPair(currPlayer, playersHand);</span>
             } else {
 <span class="fc" id="L158">                return this.getBestCardsFromPlayer(currPlayer, 1);</span>
@@ -166,204 +166,214 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
                     }
 <span class="fc" id="L168">                }</span>
-<span class="fc" id="L169">            return cardPlayedByPlayer;</span>
+<span class="fc bfc" id="L169" title="All 4 branches covered.">                while(cardPlayedByPlayer.size()!=1 &amp;&amp; !cardPlayedByPlayer.isEmpty()){</span>
+<span class="fc" id="L170">                    Card cardMin=cardPlayedByPlayer.get(0);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">                    for(int i=1;i&lt;cardPlayedByPlayer.size();i++){</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">                            if(cardPlayedByPlayer.get(i).getValue().getRank()&lt;=cardMin.getValue().getRank()){</span>
+<span class="fc" id="L173">                                Card cardAux=cardPlayedByPlayer.get(i);</span>
+<span class="fc" id="L174">                                cardPlayedByPlayer.remove(cardMin);</span>
+<span class="fc" id="L175">                                cardMin= cardAux;</span>
+<span class="fc" id="L176">                            }</span>
+                            else{
+<span class="fc" id="L178">                                cardPlayedByPlayer.remove(cardPlayedByPlayer.get(i));</span>
+                            }
+                        }
+<span class="fc" id="L181">                }</span>
+<span class="fc" id="L182">            return cardPlayedByPlayer;</span>
         }
     }
 
     @Override
     protected List&lt;Card&gt; getBestCardsFromPlayer(String player, int countCard) {
-<span class="fc" id="L175">        List&lt;Card&gt; bestCard = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L176">        List&lt;Card&gt; playersHand = this.playerCards.get(player);</span>
-<span class="fc bfc" id="L177" title="All 2 branches covered.">        for (int i = 0; i &lt; countCard; i++) {</span>
-<span class="fc" id="L178">            Card currBestCard = playersHand.get(0);</span>
-<span class="fc bfc" id="L179" title="All 2 branches covered.">            for (Card c : playersHand) {</span>
-<span class="fc bfc" id="L180" title="All 2 branches covered.">                if (c.getValue().getRank() &gt; currBestCard.getValue().getRank()) {</span>
-<span class="fc" id="L181">                    currBestCard = c;</span>
+<span class="fc" id="L188">        List&lt;Card&gt; bestCard = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L189">        List&lt;Card&gt; playersHand = this.playerCards.get(player);</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        for (int i = 0; i &lt; countCard; i++) {</span>
+<span class="fc" id="L191">            Card currBestCard = playersHand.get(0);</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">            for (Card c : playersHand) {</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">                if (c.getValue().getRank() &gt; currBestCard.getValue().getRank()) {</span>
+<span class="fc" id="L194">                    currBestCard = c;</span>
                 }
-<span class="fc" id="L183">            }</span>
-<span class="fc" id="L184">            bestCard.add(currBestCard);</span>
+<span class="fc" id="L196">            }</span>
+<span class="fc" id="L197">            bestCard.add(currBestCard);</span>
         }
-<span class="fc" id="L186">        return bestCard;</span>
+<span class="fc" id="L199">        return bestCard;</span>
     }
 
     @Override
     protected Collection&lt;Card&gt; getWorstCardsFromPlayer(String player, int countCard) {
-<span class="fc" id="L191">        List&lt;Card&gt; badCard = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L192">        List&lt;Card&gt; playersHand = this.playerCards.get(player);</span>
-<span class="fc bfc" id="L193" title="All 2 branches covered.">        for (int i = 0; i &lt; countCard; i++) {</span>
-<span class="fc" id="L194">            Card currBadCard = playersHand.get(0);</span>
-<span class="fc bfc" id="L195" title="All 2 branches covered.">            for (Card c : playersHand) {</span>
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">                if (c.getValue().getRank() &lt; currBadCard.getValue().getRank()) {</span>
-<span class="nc" id="L197">                    currBadCard = c;</span>
+<span class="fc" id="L204">        List&lt;Card&gt; badCard = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L205">        List&lt;Card&gt; playersHand = this.playerCards.get(player);</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        for (int i = 0; i &lt; countCard; i++) {</span>
+<span class="fc" id="L207">            Card currBadCard = playersHand.get(0);</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">            for (Card c : playersHand) {</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">                if (c.getValue().getRank() &lt; currBadCard.getValue().getRank()) {</span>
+<span class="nc" id="L210">                    currBadCard = c;</span>
                 }
-<span class="fc" id="L199">            }</span>
-<span class="fc" id="L200">            badCard.add(currBadCard);</span>
+<span class="fc" id="L212">            }</span>
+<span class="fc" id="L213">            badCard.add(currBadCard);</span>
         }
-<span class="fc" id="L202">        return badCard;</span>
+<span class="fc" id="L215">        return badCard;</span>
     }
 
     @Override
     protected String getPlayerWithQueenOFHeart() {
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">        for (String playerName : this.playerCards.keySet()) {</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            if (this.playerCards.get(playerName).contains(DAME_COEUR)) {</span>
-<span class="fc" id="L209">                return playerName;</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        for (String playerName : this.playerCards.keySet()) {</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">            if (this.playerCards.get(playerName).contains(DAME_COEUR)) {</span>
+<span class="fc" id="L222">                return playerName;</span>
             }
-<span class="nc" id="L211">        }</span>
-<span class="nc" id="L212">        throw new RuntimeException();</span>
+<span class="nc" id="L224">        }</span>
+<span class="nc" id="L225">        throw new RuntimeException();</span>
     }
 
     @Override
     protected String getPresident() {
-<span class="fc" id="L217">        return this.getRole(RoleValue.PRESIDENT);</span>
+<span class="fc" id="L230">        return this.getRole(RoleValue.PRESIDENT);</span>
     }
 
     @Override
     protected String getVicePresident() {
-<span class="fc" id="L222">        return this.getRole(RoleValue.VICE_PRESIDENT);</span>
+<span class="fc" id="L235">        return this.getRole(RoleValue.VICE_PRESIDENT);</span>
     }
 
     @Override
     protected String getViceTrou() {
-<span class="fc" id="L227">        return this.getRole(RoleValue.VICE_TROU);</span>
+<span class="fc" id="L240">        return this.getRole(RoleValue.VICE_TROU);</span>
     }
 
     @Override
     protected String getTrou() {
-<span class="fc" id="L232">        return getRole(RoleValue.TROU);</span>
+<span class="fc" id="L245">        return getRole(RoleValue.TROU);</span>
     }
 
     public String getRole(RoleValue role) {
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        for (String playerName : this.playerRole.keySet()) {</span>
-<span class="fc bfc" id="L237" title="All 2 branches covered.">            if (this.playerRole.get(playerName).equals(role)) {</span>
-<span class="fc" id="L238">                return playerName;</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        for (String playerName : this.playerRole.keySet()) {</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">            if (this.playerRole.get(playerName).equals(role)) {</span>
+<span class="fc" id="L251">                return playerName;</span>
             }
-<span class="fc" id="L240">        }</span>
-<span class="nc" id="L241">        throw new RuntimeException();</span>
+<span class="fc" id="L253">        }</span>
+<span class="nc" id="L254">        throw new RuntimeException();</span>
     }
 
     @Override
     protected boolean getFirstParty(int[] numberParty) {
-<span class="fc bfc" id="L246" title="All 2 branches covered.">        for (int i = 0; i &lt; numberParty.length; i++) {</span>
-<span class="fc bfc" id="L247" title="All 2 branches covered.">            if (i == 0) {</span>
-<span class="fc" id="L248">                party = true;</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">        for (int i = 0; i &lt; numberParty.length; i++) {</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">            if (i == 0) {</span>
+<span class="fc" id="L261">                party = true;</span>
             }
-<span class="fc" id="L250">            party = false;</span>
+<span class="fc" id="L263">            party = false;</span>
         }
-<span class="fc" id="L252">        return party;</span>
+<span class="fc" id="L265">        return party;</span>
     }
 
     public List&lt;Card&gt; cardPair(String player, List&lt;Card&gt; playersHand) {
-<span class="fc" id="L256">        playersHand = this.playerCards.get(player);</span>
-<span class="fc" id="L257">        List&lt;Card&gt; playerCardPair = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L258" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
-<span class="fc bfc" id="L259" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
-<span class="fc bfc" id="L260" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
-<span class="fc" id="L261">                    playerCardPair.add(playersHand.get(i));</span>
-<span class="fc" id="L262">                    playerCardPair.add(playersHand.get(j));</span>
+        //playersHand = this.playerCards.get(player);
+<span class="fc" id="L270">        List&lt;Card&gt; playerCardPair = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
+<span class="fc" id="L274">                    playerCardPair.add(playersHand.get(i));</span>
+<span class="fc" id="L275">                    playerCardPair.add(playersHand.get(j));</span>
                 }
             }
         }
-<span class="fc" id="L266">        return playerCardPair;</span>
+<span class="fc" id="L279">        return playerCardPair;</span>
 
     }
 
     public List&lt;Card&gt; cardBrelon(String player, List&lt;Card&gt; playersHand) {
-<span class="fc" id="L271">        playersHand = this.playerCards.get(player);</span>
-<span class="fc" id="L272">        List&lt;Card&gt; playerCardBrelon = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L273" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
-<span class="fc bfc" id="L274" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
-<span class="fc bfc" id="L275" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
-<span class="fc" id="L276">                    playerCardBrelon.add(playersHand.get(j));</span>
-<span class="fc bfc" id="L277" title="All 2 branches covered.">                    if (!playerCardBrelon.contains(playersHand.get(i))) {</span>
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">                        if (playerCardBrelon.contains(playersHand.get(j))) {</span>
-<span class="fc" id="L279">                            playerCardBrelon.add(playersHand.get(i));</span>
-<span class="fc" id="L280">                            playerCardBrelon.remove(playersHand.get(j));</span>
+<span class="fc" id="L284">        playersHand = this.playerCards.get(player);</span>
+<span class="fc" id="L285">        List&lt;Card&gt; playerCardBrelon = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
+<span class="fc" id="L289">                    playerCardBrelon.add(playersHand.get(j));</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">                    if (!playerCardBrelon.contains(playersHand.get(i))) {</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">                        if (playerCardBrelon.contains(playersHand.get(j))) {</span>
+<span class="fc" id="L292">                            playerCardBrelon.add(playersHand.get(i));</span>
+<span class="fc" id="L293">                            playerCardBrelon.remove(playersHand.get(j));</span>
                         }
                     }
                 }
             }
         }
-<span class="fc" id="L286">        return playerCardBrelon;</span>
+<span class="fc" id="L299">        return playerCardBrelon;</span>
 
     }
 
     public List&lt;Card&gt; cardCarre(String player, List&lt;Card&gt; playersHand) {
-<span class="fc" id="L291">        playersHand = this.playerCards.get(player);</span>
-<span class="fc" id="L292">        List&lt;Card&gt; playerCardCarre = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L293" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
-<span class="fc bfc" id="L294" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
-<span class="fc bfc" id="L295" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
-<span class="fc bfc" id="L296" title="All 2 branches covered.">                    if (!(playerCardCarre.contains(playersHand.get(i)))</span>
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">                            &amp;&amp; !(playerCardCarre.contains(playersHand.get(j)))) {</span>
-<span class="fc" id="L298">                        playerCardCarre.add(playersHand.get(j));</span>
-<span class="fc" id="L299">                        playerCardCarre.add(playersHand.get(i));</span>
+<span class="fc" id="L304">        playersHand = this.playerCards.get(player);</span>
+<span class="fc" id="L305">        List&lt;Card&gt; playerCardCarre = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">                    if (!(playerCardCarre.contains(playersHand.get(i)))</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">                            &amp;&amp; !(playerCardCarre.contains(playersHand.get(j)))) {</span>
+<span class="fc" id="L311">                        playerCardCarre.add(playersHand.get(j));</span>
+<span class="fc" id="L312">                        playerCardCarre.add(playersHand.get(i));</span>
                     }
                 }
             }
         }
-<span class="fc" id="L304">        return playerCardCarre;</span>
+<span class="fc" id="L317">        return playerCardCarre;</span>
 
     }
 
-    public boolean ifCarre(String player) {
-<span class="fc" id="L309">        List&lt;Card&gt; playersHand = this.playerCards.get(player);</span>
-<span class="fc" id="L310">        int countMax = 1;</span>
-<span class="fc bfc" id="L311" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
-<span class="fc" id="L312">            int count = 1;</span>
-<span class="fc bfc" id="L313" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
-<span class="fc bfc" id="L314" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
-<span class="fc" id="L315">                    count++;</span>
+    public boolean ifCarre(List&lt;Card&gt; playersHand ) {
+<span class="fc" id="L322">        int countMax = 1;</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
+<span class="fc" id="L324">            int count = 1;</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
+<span class="fc" id="L327">                    count++;</span>
                 }
             }
-<span class="fc bfc" id="L318" title="All 2 branches covered.">            if (count &gt; countMax) {</span>
-<span class="fc" id="L319">                countMax = count;</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">            if (count &gt; countMax) {</span>
+<span class="fc" id="L331">                countMax = count;</span>
             }
         }
-<span class="fc bfc" id="L322" title="All 2 branches covered.">        if (countMax == 4) {</span>
-<span class="fc" id="L323">            return true;</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">        if (countMax == 4) {</span>
+<span class="fc" id="L335">            return true;</span>
         }
-<span class="fc" id="L325">        return false;</span>
+<span class="fc" id="L337">        return false;</span>
     }
 
-    public boolean ifBrelon(String player) {
-<span class="fc" id="L329">        List&lt;Card&gt; playersHand = this.playerCards.get(player);</span>
-<span class="fc" id="L330">        int countMax = 1;</span>
-<span class="fc bfc" id="L331" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
-<span class="fc" id="L332">            int count = 1;</span>
-<span class="fc bfc" id="L333" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
-<span class="fc bfc" id="L334" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
-<span class="fc" id="L335">                    count++;</span>
+    public boolean ifBrelon(List&lt;Card&gt; playersHand) {
+<span class="fc" id="L341">        int countMax = 1;</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
+<span class="fc" id="L343">            int count = 1;</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
+<span class="fc" id="L346">                    count++;</span>
                 }
             }
-<span class="fc bfc" id="L338" title="All 2 branches covered.">            if (count &gt; countMax) {</span>
-<span class="fc" id="L339">                countMax = count;</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">            if (count &gt; countMax) {</span>
+<span class="fc" id="L350">                countMax = count;</span>
             }
         }
-<span class="fc bfc" id="L342" title="All 2 branches covered.">        if (countMax == 3) {</span>
-<span class="fc" id="L343">            return true;</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        if (countMax == 3) {</span>
+<span class="fc" id="L354">            return true;</span>
         }
-<span class="fc" id="L345">        return false;</span>
+<span class="fc" id="L356">        return false;</span>
     }
 
-    public boolean ifPair(String player) {
-<span class="fc" id="L349">        List&lt;Card&gt; playersHand = this.playerCards.get(player);</span>
-<span class="fc" id="L350">        int countMax = 1;</span>
-<span class="fc bfc" id="L351" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
-<span class="fc" id="L352">            int count = 1;</span>
-<span class="fc bfc" id="L353" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
-<span class="fc bfc" id="L354" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
-<span class="fc" id="L355">                    count++;</span>
+    public boolean ifPair(List&lt;Card&gt; playersHand) {
+<span class="fc" id="L360">        int countMax = 1;</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        for (int i = 0; i &lt; playersHand.size(); i++) {</span>
+<span class="fc" id="L362">            int count = 1;</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">            for (int j = i + 1; j &lt; playersHand.size(); j++) {</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {</span>
+<span class="fc" id="L365">                    count++;</span>
                 }
             }
-<span class="fc bfc" id="L358" title="All 2 branches covered.">            if (count &gt; countMax) {</span>
-<span class="fc" id="L359">                countMax = count;</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">            if (count &gt; countMax) {</span>
+<span class="fc" id="L369">                countMax = count;</span>
             }
         }
-<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (countMax == 2) {</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">        if (countMax == 2) {</span>
 
-<span class="fc" id="L364">            return true;</span>
+<span class="fc" id="L374">            return true;</span>
         }
-<span class="fc" id="L366">        return false;</span>
+<span class="fc" id="L376">        return false;</span>
     }
 
 }

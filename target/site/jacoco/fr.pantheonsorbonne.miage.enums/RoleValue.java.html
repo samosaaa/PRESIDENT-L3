@@ -9,7 +9,7 @@
 
     final private String stringRepresentation;
     final private int value;
-    static int role;
+    int role;
 
 <span class="fc" id="L14">    RoleValue(String stringRepresentation, int value) {</span>
 <span class="fc" id="L15">        this.stringRepresentation = stringRepresentation;</span>
@@ -36,9 +36,9 @@
 <span class="nc" id="L36">        return value;</span>
     }
 
-    public static void setRoleValue(String player, int value){
-<span class="nc" id="L40">        role = value;</span>
-<span class="nc" id="L41">    }</span>
+    public void setRoleValue(int value){
+<span class="nc" id="L40">        this.role = value;</span>
+<span class="nc" id="L41">    } </span>
 
 
 }

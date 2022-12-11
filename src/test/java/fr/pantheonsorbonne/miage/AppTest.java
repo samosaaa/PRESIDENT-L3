@@ -201,7 +201,7 @@ public class AppTest
 
         test5.playerCards.put("J1", cardJ1);
 
-        assertEquals(true, test5.ifCarre("J1"));
+        assertEquals(true, test5.ifCarre(test5.playerCards.get("J1")));
 
     }
 
@@ -217,7 +217,7 @@ public class AppTest
 
         test5.playerCards.put("J1", cardJ1);
 
-        assertEquals(true, test5.ifBrelon("J1"));
+        assertEquals(true, test5.ifBrelon(test5.playerCards.get("J1")));
 
     }
 
@@ -232,7 +232,7 @@ public class AppTest
 
         test5.playerCards.put("J1", cardJ1);
 
-        assertEquals(true, test5.ifPair("J1"));
+        assertEquals(true, test5.ifPair(test5.playerCards.get("J1")));
 
     }
 
@@ -406,12 +406,30 @@ public class AppTest
         ArrayList<Card> cardJ1 = new ArrayList<>();
         cardJ1.add(Card.valueOf("4H"));
         cardJ1.add(Card.valueOf("3S"));
-        cardJ1.add(Card.valueOf("5D"));
+        cardJ1.add(Card.valueOf("10D"));
         cardJ1.add(Card.valueOf("KD"));
         ArrayList<Card> card = new ArrayList<>();
         List<Card> tapis = new ArrayList<>();
         tapis.add(Card.valueOf("9H"));
-        card.add(Card.valueOf("KD"));
+        card.add(Card.valueOf("10D"));
+        test5.playerCards.put("J1", cardJ1);
+        assertEquals(card, test5.playerPlayCards("J1",tapis));
+    }
+
+    @Test
+    public void playerPlayCards6() throws NoMoreCardException{
+        HashSet<String> players = new HashSet<>();
+        players.add("J1");
+        var test5 = new LocalPresidentGame(players);
+        ArrayList<Card> cardJ1 = new ArrayList<>();
+        cardJ1.add(Card.valueOf("4H"));
+        cardJ1.add(Card.valueOf("3S"));
+        cardJ1.add(Card.valueOf("KD"));
+        cardJ1.add(Card.valueOf("10D"));
+        ArrayList<Card> card = new ArrayList<>();
+        List<Card> tapis = new ArrayList<>();
+        tapis.add(Card.valueOf("9H"));
+        card.add(Card.valueOf("10D"));
         test5.playerCards.put("J1", cardJ1);
         assertEquals(card, test5.playerPlayCards("J1",tapis));
     }
