@@ -21,7 +21,7 @@ public abstract class PresidentGameEngine {
      * play a President game wit the provided players
      */
     public void play()  {
-        for(int i=0;i<numberParty.length;i++) {
+        //for ( int i=0; i<numberParty.length; i++ ) {
             //send the initial hand to every players
             for (String playerName : getInitialPlayers()) {
                 //get random cards
@@ -38,7 +38,7 @@ public abstract class PresidentGameEngine {
             if (getFirstParty(numberParty)) {
                 firstPlayerInRound = this.getPlayerWithQueenOFHeart();
 
-            } else {
+            } /* else {
                 firstPlayerInRound = this.getPresident(); 
                 Collection<Card> presCards = this.getWorstCardsFromPlayer(firstPlayerInRound, 2);
                 Collection<Card> trouCards = this.getBestCardsFromPlayer(this.getTrou(), 2);
@@ -49,7 +49,7 @@ public abstract class PresidentGameEngine {
                 Collection<Card> viceTrouCards = this.getBestCardsFromPlayer(this.getViceTrou(), 1);               
                 this.giveCardsToPlayer(viceTrouCards, this.getVicePresident());
                 this.giveCardsToPlayer(vicePresCards, this.getViceTrou());
-            }
+            } */
 
             String currPlayer = firstPlayerInRound;
             List<Card> tapis = new ArrayList();
@@ -79,7 +79,7 @@ public abstract class PresidentGameEngine {
 
 
             }            
-        }
+        //}
         String winner = winnerPlayer.poll(); 
         //send him the gameover and leave
         declareWinner(winner);
