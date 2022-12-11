@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
  */
 public class LocalPresidentGame extends PresidentGameEngine {
 
-    final Set<String> initialPlayers;
+    final List<String> initialPlayers;
     public final Map<String, List<Card>> playerCards = new HashMap<>();
     final Map<String, RoleValue> playerRole = new HashMap<>();
     Queue<String> finishedPlayer = new LinkedList<>();
 
 
-    public LocalPresidentGame(Set<String> initialPlayers) {
-        this.initialPlayers = initialPlayers;
-        for (String player : initialPlayers) {
+    public LocalPresidentGame(List<String> players) {
+        this.initialPlayers = players;
+        for (String player : players) {
             playerCards.put(player, new ArrayList<>());
 
         }
@@ -28,13 +28,13 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     public static void main(String... args) {
         LocalPresidentGame localPresidentGame = new LocalPresidentGame(
-                Set.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
+                List.of("Joueur1", "Joueur2", "Joueur3", "Joueur4"));
         localPresidentGame.play();
 
     }
 
     @Override
-    protected Set<String> getInitialPlayers() {
+    protected List<String> getInitialPlayers() {
         return this.initialPlayers;
     }
 
@@ -100,7 +100,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     protected Queue<String> addFinishedPlayer(String currPlayer) {
         this.finishedPlayer.offer(currPlayer);
-        return finishedPlayer;
+        return this.finishedPlayer;
     }
 
     @Override
@@ -126,19 +126,17 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     @Override
-    protected String getNextPlayer(String currPlayer) {
-        Queue<String> playersIn = new LinkedList<>();
-        playersIn.addAll(this.getInitialPlayers());
+    protected String getNextPlayer(String currPlayer, List<String> players) {
 
         String currPlayerInRound;
         String nextPlayerInRound;
         do {
             // take the first player form the queue
-            currPlayerInRound = playersIn.poll();
+            currPlayerInRound = players.remove(0);
             // and put it immediately at the end
-            playersIn.offer(currPlayerInRound);
+            players.add(currPlayerInRound);
             // take also the next without retriving it
-            nextPlayerInRound = playersIn.peek();
+            nextPlayerInRound = players.get(0);
 
         } while (!Objects.equals(currPlayerInRound, currPlayer));
 
@@ -148,26 +146,19 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     protected List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException {
         List<Card> playersHand = this.playerCards.get(currPlayer);
-        if (tapis.isEmpty() && !playersHand.isEmpty()) {
-            if (ifCarre( playersHand )) {
-                //playersHand.removeAll(this.cardCarre(currPlayer, playersHand));
+        if (tapis.isEmpty()) {
+            if ( ifCarre( playersHand )) {
                 return this.cardCarre(currPlayer, playersHand);
             } else if ( ifBrelon( playersHand )) {
-                //playersHand.removeAll(this.cardBrelon(currPlayer, playersHand));
                 return this.cardBrelon(currPlayer, playersHand);
             } else if ( ifPair( playersHand )) {
-                //playersHand.removeAll(this.cardPair(currPlayer, playersHand));
                 return this.cardPair(currPlayer, playersHand);
-            } else {
+            }
                 //playersHand.removeAll(this.getBestCardsFromPlayer(currPlayer, 1));
                 return this.getBestCardsFromPlayer(currPlayer, 1);
-            }
+            
         } else {
-            if (playersHand.isEmpty()) {
-                System.out.println(currPlayer +" Has no more cards in hand, he's out of the party");
-
-            }
-
+            
             List<Card> cardPlayedByPlayer = new ArrayList<>();
             Card lastCardInTapis = tapis.get(tapis.size()-1);
                 for (Card c : playersHand) {
@@ -190,14 +181,16 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             return cardPlayedByPlayer;
         }
+        
     }
 
     @Override
     protected List<Card> getBestCardsFromPlayer(String player, int countCard) {
         List<Card> bestCard = new ArrayList<>();
         List<Card> playersHand = this.playerCards.get(player);
-        for (int i = 0; i < countCard; i++) {
-            
+        int i=0;
+        while (i <countCard ) {
+            i++;
             Card currBestCard = playersHand.get(0);
             for (Card c : playersHand) {
                 if (c.getValue().getRank() > currBestCard.getValue().getRank()) {
@@ -213,7 +206,9 @@ public class LocalPresidentGame extends PresidentGameEngine {
     protected Collection<Card> getWorstCardsFromPlayer(String player, int countCard) {
         List<Card> badCard = new ArrayList<>();
         List<Card> playersHand = this.playerCards.get(player);
-        for (int i = 0; i < countCard; i++) {
+        int i=0;
+        while (i <countCard) {
+            i++;
             Card currBadCard = playersHand.get(0);
             for (Card c : playersHand) {
                 if (c.getValue().getRank() < currBadCard.getValue().getRank()) {
@@ -278,21 +273,26 @@ public class LocalPresidentGame extends PresidentGameEngine {
     public List<Card> cardPair(String player, List<Card> playersHand) {
         playersHand = this.playerCards.get(player);
         List<Card> playerCardPair = new ArrayList<>();
-        for (int i = 0; i < playersHand.size(); i++) {
-            for (int j = i + 1; j < playersHand.size(); j++) {
-                if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
-                    playerCardPair.add(playersHand.get(i));
-                    playerCardPair.add(playersHand.get(j));
+        
+            for (int i = 0; i < playersHand.size(); i++) {
+                for (int j = i + 1; j < playersHand.size(); j++) {
+                    if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
+                        playerCardPair.add(playersHand.get(i));
+                        playerCardPair.add(playersHand.get(j));
+                        if (playerCardPair.size()==2) {
+                            return playerCardPair;
+                        }
+                    }
                 }
             }
-        }
-        return playerCardPair;
-
+            return playerCardPair;
+          
     }
 
     public List<Card> cardBrelon(String player, List<Card> playersHand) {
         playersHand = this.playerCards.get(player);
         List<Card> playerCardBrelon = new ArrayList<>();
+
         for (int i = 0; i < playersHand.size(); i++) {
             for (int j = i + 1; j < playersHand.size(); j++) {
                 if (playersHand.get(i).getValue().equals(playersHand.get(j).getValue())) {
@@ -300,14 +300,17 @@ public class LocalPresidentGame extends PresidentGameEngine {
                     if (!playerCardBrelon.contains(playersHand.get(i))) {
                         if (playerCardBrelon.contains(playersHand.get(j))) {
                             playerCardBrelon.add(playersHand.get(i));
-                            //playerCardBrelon.remove(playersHand.get(j));
+                            playerCardBrelon.remove(playersHand.get(j));
+                            if (playerCardBrelon.size()==3){
+                                return playerCardBrelon;
+                            }
                         }
                     }
                 }
             }
         }
-        return playerCardBrelon;
-
+        return playerCardBrelon; 
+        
     }
 
     public List<Card> cardCarre(String player, List<Card> playersHand) {

@@ -4,16 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collection;
+//import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Random;
+//import java.util.Queue;
+//import java.util.Random;
 import java.util.Set;
 
-import javax.management.relation.Role;
+//import javax.management.relation.Role;
 
 import fr.pantheonsorbonne.miage.enums.CardColor;
 import fr.pantheonsorbonne.miage.enums.CardValue;
@@ -42,7 +42,7 @@ public class AppTest
     
     @Test
     public void getInitialPlayers(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         var test1 = new LocalPresidentGame(players);
         assertEquals(players, test1.getInitialPlayers());
     }
@@ -51,7 +51,7 @@ public class AppTest
 
     @Test
     public void getPlayerWithQueenOFHeart() {
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         players.add("J2");
 
@@ -69,7 +69,7 @@ public class AppTest
 
     @Test
     public void getRole() throws Exception{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         players.add("J2");
         players.add("J3");
@@ -93,7 +93,7 @@ public class AppTest
 
     @Test
     public void getPresident(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test2 = new LocalPresidentGame(players);
         test2.playerRole.put("J1", RoleValue.PRESIDENT);
@@ -105,7 +105,7 @@ public class AppTest
 
     @Test
     public void getVicePresident(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test2 = new LocalPresidentGame(players);
         test2.playerRole.put("J1", RoleValue.PRESIDENT);
@@ -117,7 +117,7 @@ public class AppTest
 
     @Test
     public void getViceTrou(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test2 = new LocalPresidentGame(players);
         test2.playerRole.put("J1", RoleValue.PRESIDENT);
@@ -129,7 +129,7 @@ public class AppTest
 
     @Test
     public void getTrou(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test2 = new LocalPresidentGame(players);
         test2.playerRole.put("J1", RoleValue.PRESIDENT);
@@ -143,7 +143,7 @@ public class AppTest
 
     @Test
     public void getBestCardsFromPlayer(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
 
         var test1 = new LocalPresidentGame(players);
@@ -160,7 +160,7 @@ public class AppTest
 
     @Test
     public void getWorstCardsFromPlayer(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
 
         var test1 = new LocalPresidentGame(players);
@@ -176,12 +176,12 @@ public class AppTest
 
     @Test
     public void getNextPlayer(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         players.add("J2");
         var test4 = new LocalPresidentGame(players);
         
-        asserEquals("J2", test4.getNextPlayer("J1"));
+        asserEquals("J2", test4.getNextPlayer("J1",players));
     }
 
 
@@ -190,7 +190,7 @@ public class AppTest
 
     @Test
     public void ifCarre(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -207,7 +207,7 @@ public class AppTest
 
     @Test
     public void ifBrelon(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -223,7 +223,7 @@ public class AppTest
 
     @Test
     public void ifPair(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -238,13 +238,15 @@ public class AppTest
 
     @Test
     public void cardPair(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
         cardJ1.add(Card.valueOf("QH"));
         cardJ1.add(Card.valueOf("QS"));
         cardJ1.add(Card.valueOf("KS"));
+        cardJ1.add(Card.valueOf("10H"));
+        cardJ1.add(Card.valueOf("10S"));
         ArrayList<Card> card = new ArrayList<>();
         card.add(Card.valueOf("QH"));
         card.add(Card.valueOf("QS"));
@@ -254,7 +256,7 @@ public class AppTest
 
     @Test
     public void cardBrelon(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -273,7 +275,7 @@ public class AppTest
 
     @Test
     public void cardCarre(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -294,7 +296,7 @@ public class AppTest
 
     @Test
     public void playerPlayCards() throws NoMoreCardException{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
 
         var test5 = new LocalPresidentGame(players);
@@ -320,7 +322,7 @@ public class AppTest
 
     @Test
     public void playerPlayCards1() throws NoMoreCardException{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
 
         var test5 = new LocalPresidentGame(players);
@@ -342,7 +344,7 @@ public class AppTest
 
     @Test
     public void playerPlayCards2() throws NoMoreCardException{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
 
         var test5 = new LocalPresidentGame(players);
@@ -362,7 +364,7 @@ public class AppTest
 
     @Test
     public void playerPlayCards3() throws NoMoreCardException{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
 
         var test5 = new LocalPresidentGame(players);
@@ -382,7 +384,7 @@ public class AppTest
 
     @Test
     public void playerPlayCards4() throws NoMoreCardException{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
 
         var test5 = new LocalPresidentGame(players);
@@ -400,7 +402,7 @@ public class AppTest
 
     @Test
     public void playerPlayCards5() throws NoMoreCardException{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -418,7 +420,7 @@ public class AppTest
 
     @Test
     public void playerPlayCards6() throws NoMoreCardException{
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test5 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -436,7 +438,7 @@ public class AppTest
 
     @Test
     public void giveCardsToPlayer(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test1 = new LocalPresidentGame(players);
         ArrayList<Card> cardJ1 = new ArrayList<>();
@@ -448,18 +450,18 @@ public class AppTest
     }
 
     @Test void getCurrentPlayerCount(){
-        Set<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         players.add("J2");
         var test1 = new LocalPresidentGame(players);
-        Queue<String> player = new LinkedList<>();
-        player.offer("J1");
-        player.offer("J2");
+        List<String> player = new LinkedList<>();
+        player.add("J1");
+        player.add("J2");
         assertEquals(2, test1.getCurrentPlayerCount(player));
     }
     @Test
     public void declareWinner(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         var test1 = new LocalPresidentGame(players);
         String winner="J1";
@@ -469,7 +471,7 @@ public class AppTest
 
     @Test
     public void getFirstParty(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         var test = new LocalPresidentGame(players);
         int [] numberParty = new int [3];
         boolean result = !test.getFirstParty(numberParty);
@@ -504,7 +506,7 @@ public class AppTest
 
     @Test
     public void getWinner(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         players.add("J2");
 
@@ -521,7 +523,7 @@ public class AppTest
 
     @Test
     public void addFinishedPlayer(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         players.add("J1");
         players.add("J2");
         var test1 = new LocalPresidentGame(players);
@@ -529,7 +531,7 @@ public class AppTest
 
     @Test 
     public void isTapisFinished1(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         var test1 = new LocalPresidentGame(players);
         List<Card> tapis = new ArrayList();
         tapis.add(Card.valueOf("2C"));
@@ -540,7 +542,7 @@ public class AppTest
 
     @Test 
     public void isTapisFinished2(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         var test1 = new LocalPresidentGame(players);
         List<Card> tapis = new ArrayList();
         tapis.add(Card.valueOf("2D"));
@@ -551,7 +553,7 @@ public class AppTest
 
     @Test 
     public void isTapisFinished3(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         var test1 = new LocalPresidentGame(players);
         List<Card> tapis = new ArrayList();
         tapis.add(Card.valueOf("2H"));
@@ -562,7 +564,7 @@ public class AppTest
 
     @Test 
     public void isTapisFinished4(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         var test1 = new LocalPresidentGame(players);
         List<Card> tapis = new ArrayList();
         tapis.add(Card.valueOf("2S"));
@@ -573,7 +575,7 @@ public class AppTest
 
     @Test 
     public void isTapisFinished(){
-        HashSet<String> players = new HashSet<>();
+        List<String> players = new LinkedList<>();
         var test1 = new LocalPresidentGame(players);
         List<Card> tapis = new ArrayList();
         tapis.add(Card.valueOf("3C"));

@@ -1,12 +1,10 @@
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\exception\NoMorePlayerException.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\utils\ConsoleColors.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\enums\CardColor.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\enums\CardValue.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\game\Deck.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\PresidentGameNetworkEngine.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\enums\RoleValue.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\LocalPresidentGame.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\exception\NoMoreCardException.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\PresidentGameEngine.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\game\Card.java
-C:\Users\yessi\OneDrive\Bureau\JAVA\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\PresidentGameNetworkPlayer.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\exception\NoMorePlayerException.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\PresidentGameEngine.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\game\Card.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\enums\RoleValue.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\LocalPresidentGame.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\utils\ConsoleColors.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\exception\NoMoreCardException.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\enums\CardColor.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\enums\CardValue.java
+C:\Users\samra\OneDrive\Bureau\L3 MIAGE\END GAME\PRESIDENT-L3\src\main\java\fr\pantheonsorbonne\miage\game\Deck.java

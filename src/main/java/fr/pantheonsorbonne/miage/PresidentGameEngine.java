@@ -34,9 +34,9 @@ public abstract class PresidentGameEngine {
                 System.out.println("cards have been partagé");
             }
             // make a queue with all the players
-            final List<String> players = new LinkedList<>();
+            List<String> players = new LinkedList<>();
             players.addAll(this.getInitialPlayers());
-            System.out.println("starting a party by adding players in a queue");
+            System.out.println("players are in a the List");
             String firstPlayerInRound = "";
             //if (getFirstParty(numberParty)) {
                 firstPlayerInRound = this.getPlayerWithQueenOFHeart();
@@ -58,8 +58,9 @@ public abstract class PresidentGameEngine {
 
             String currPlayer = firstPlayerInRound;
             List<Card> tapis = new LinkedList<>();
-            System.out.println("the tapis is initialized");
+            System.out.println("the tapis is initialized, Lets START");
             int skipped = 0;
+
             while (this.getCurrentPlayerCount(players) >= 2) {
                 List<Card> playedCardByPlayer = new LinkedList<>(); 
                 try {
@@ -68,29 +69,44 @@ public abstract class PresidentGameEngine {
                     printCards(playedCardByPlayer);
 
                     tapis.addAll(playedCardByPlayer);
+                    //printCards(tapis);
+
                     removeFromPlayerHand(currPlayer, playedCardByPlayer);
-                } catch (NoMoreCardException e) {
+
+                } catch (NoMoreCardException e) {                         //quand le joueur a une main vide
+
+                    System.out.println(currPlayer +" Has no more cards, he's out of the party, and he WON");
                     this.addFinishedPlayer(currPlayer);
-                    System.out.println(currPlayer+" has no more cards he won");
+
                     players.remove(currPlayer);
 
-                    currPlayer=this.getNextPlayer(currPlayer);
+                    currPlayer=this.getNextPlayer(currPlayer,players);
                     continue;
                 }
+
+
+
                 if (playedCardByPlayer.isEmpty()) {
                     skipped++;
                     System.out.println(currPlayer+" has skipped !");
                 }
+
+
+                
                 if (skipped == this.getCurrentPlayerCount(players) - 1) {
                     tapis.removeAll(tapis);
+                    skipped = 0;
                     System.out.println("everyone has skipped, the tapis is plié");
                     continue;
                 }
+
+
                 if (!this.isTapisFinished(tapis)) {
-                    currPlayer = this.getNextPlayer(currPlayer);
+                    currPlayer = this.getNextPlayer(currPlayer,players);
                     System.out.println("next player to play is "+currPlayer);
                 } else {
                     tapis.removeAll(tapis);
+                    skipped = 0;
                 }
 
             }            
@@ -133,7 +149,7 @@ public abstract class PresidentGameEngine {
      * @param currPlayer last player to have played
      * @return the next player to play
      */
-    protected abstract String getNextPlayer(String currPlayer);
+    protected abstract String getNextPlayer(String currPlayer, List<String> players);
 
     /**
      * @param currPlayer the player to play the cards
@@ -169,7 +185,7 @@ public abstract class PresidentGameEngine {
      *
      * @return
      */
-    protected abstract Set<String> getInitialPlayers();
+    protected abstract List<String> getInitialPlayers();
 
     /**
      * give some card to a player
