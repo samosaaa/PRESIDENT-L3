@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 public class LocalPresidentGame extends PresidentGameEngine {
 
     final Set<String> initialPlayers;
-    final Map<String, ArrayList<Card>> playerCards = new HashMap<>();
+    public final Map<String, List<Card>> playerCards = new HashMap<>();
     final Map<String, RoleValue> playerRole = new HashMap<>();
+    Queue<String> finishedPlayer = new LinkedList<>();
+
 
     public LocalPresidentGame(Set<String> initialPlayers) {
         this.initialPlayers = initialPlayers;
@@ -97,13 +99,12 @@ public class LocalPresidentGame extends PresidentGameEngine {
 
     @Override
     protected Queue<String> addFinishedPlayer(String currPlayer) {
-        Queue<String> finishedPlayer = new LinkedList<>();
-        finishedPlayer.offer(currPlayer);
+        this.finishedPlayer.offer(currPlayer);
         return finishedPlayer;
     }
 
     @Override
-    protected int getCurrentPlayerCount(Queue<String> players) {
+    protected int getCurrentPlayerCount(List<String> players) {
         return players.size();
     }
 
@@ -147,17 +148,26 @@ public class LocalPresidentGame extends PresidentGameEngine {
     @Override
     protected List<Card> playerPlayCards(String currPlayer, List<Card> tapis) throws NoMoreCardException {
         List<Card> playersHand = this.playerCards.get(currPlayer);
-        if (tapis.isEmpty()) {
+        if (tapis.isEmpty() && !playersHand.isEmpty()) {
             if (ifCarre( playersHand )) {
+                //playersHand.removeAll(this.cardCarre(currPlayer, playersHand));
                 return this.cardCarre(currPlayer, playersHand);
             } else if ( ifBrelon( playersHand )) {
+                //playersHand.removeAll(this.cardBrelon(currPlayer, playersHand));
                 return this.cardBrelon(currPlayer, playersHand);
             } else if ( ifPair( playersHand )) {
+                //playersHand.removeAll(this.cardPair(currPlayer, playersHand));
                 return this.cardPair(currPlayer, playersHand);
             } else {
+                //playersHand.removeAll(this.getBestCardsFromPlayer(currPlayer, 1));
                 return this.getBestCardsFromPlayer(currPlayer, 1);
             }
         } else {
+            if (playersHand.isEmpty()) {
+                System.out.println(currPlayer +" Has no more cards in hand, he's out of the party");
+
+            }
+
             List<Card> cardPlayedByPlayer = new ArrayList<>();
             Card lastCardInTapis = tapis.get(tapis.size()-1);
                 for (Card c : playersHand) {
@@ -187,6 +197,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         List<Card> bestCard = new ArrayList<>();
         List<Card> playersHand = this.playerCards.get(player);
         for (int i = 0; i < countCard; i++) {
+            
             Card currBestCard = playersHand.get(0);
             for (Card c : playersHand) {
                 if (c.getValue().getRank() > currBestCard.getValue().getRank()) {
@@ -194,7 +205,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
             bestCard.add(currBestCard);
-            playersHand.remove(currBestCard);
         }
         return bestCard;
     }
@@ -211,7 +221,6 @@ public class LocalPresidentGame extends PresidentGameEngine {
                 }
             }
             badCard.add(currBadCard);
-            playersHand.remove(currBadCard);
         }
         return badCard;
     }
@@ -267,7 +276,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
     }
 
     public List<Card> cardPair(String player, List<Card> playersHand) {
-        //playersHand = this.playerCards.get(player);
+        playersHand = this.playerCards.get(player);
         List<Card> playerCardPair = new ArrayList<>();
         for (int i = 0; i < playersHand.size(); i++) {
             for (int j = i + 1; j < playersHand.size(); j++) {
@@ -291,7 +300,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                     if (!playerCardBrelon.contains(playersHand.get(i))) {
                         if (playerCardBrelon.contains(playersHand.get(j))) {
                             playerCardBrelon.add(playersHand.get(i));
-                            playerCardBrelon.remove(playersHand.get(j));
+                            //playerCardBrelon.remove(playersHand.get(j));
                         }
                     }
                 }
@@ -356,6 +365,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         }
         return false;
     }
+    
 
     public boolean ifPair(List<Card> playersHand) {
         int countMax = 1;
@@ -371,10 +381,16 @@ public class LocalPresidentGame extends PresidentGameEngine {
             }
         }
         if (countMax == 2) {
-
             return true;
         }
         return false;
     }
+
+
+    @Override
+    public void removeFromPlayerHand(String currPlayer, List<Card> playedCardByPlayer) {
+        this.playerCards.get(currPlayer).removeAll(playedCardByPlayer);
+    }
+
 
 }

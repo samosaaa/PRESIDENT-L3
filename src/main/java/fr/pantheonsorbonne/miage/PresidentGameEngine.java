@@ -6,6 +6,7 @@ import fr.pantheonsorbonne.miage.game.Card;
 import fr.pantheonsorbonne.miage.game.Deck;
 import fr.pantheonsorbonne.miage.enums.RoleValue;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * this class is a abstract version of the engine, to be used locally on through the network
@@ -30,13 +31,16 @@ public abstract class PresidentGameEngine {
                 String hand = Card.cardsToString(cards);
                 //send them to this players
                 giveCardsToPlayer(playerName, hand);
+                System.out.println("cards have been partagé");
             }
             // make a queue with all the players
-            final Queue<String> players = new LinkedList<>();
+            final List<String> players = new LinkedList<>();
             players.addAll(this.getInitialPlayers());
+            System.out.println("starting a party by adding players in a queue");
             String firstPlayerInRound = "";
             //if (getFirstParty(numberParty)) {
                 firstPlayerInRound = this.getPlayerWithQueenOFHeart();
+                System.out.println("firstplayer to play, having QUEEN of HEART is : "+firstPlayerInRound);
 
             //} 
             /* else {
@@ -54,29 +58,40 @@ public abstract class PresidentGameEngine {
 
             String currPlayer = firstPlayerInRound;
             List<Card> tapis = new LinkedList<>();
+            System.out.println("the tapis is initialized");
             int skipped = 0;
             while (this.getCurrentPlayerCount(players) >= 2) {
                 List<Card> playedCardByPlayer = new LinkedList<>(); 
                 try {
                     playedCardByPlayer = this.playerPlayCards(currPlayer, tapis);
+                    System.out.println(currPlayer+ " decide to play: \n");
+                    printCards(playedCardByPlayer);
+
                     tapis.addAll(playedCardByPlayer);
+                    removeFromPlayerHand(currPlayer, playedCardByPlayer);
                 } catch (NoMoreCardException e) {
                     this.addFinishedPlayer(currPlayer);
+                    System.out.println(currPlayer+" has no more cards he won");
+                    players.remove(currPlayer);
+
                     currPlayer=this.getNextPlayer(currPlayer);
+                    continue;
                 }
                 if (playedCardByPlayer.isEmpty()) {
                     skipped++;
+                    System.out.println(currPlayer+" has skipped !");
                 }
                 if (skipped == this.getCurrentPlayerCount(players) - 1) {
-                    tapis = Collections.emptyList();
+                    tapis.removeAll(tapis);
+                    System.out.println("everyone has skipped, the tapis is plié");
                     continue;
                 }
                 if (!this.isTapisFinished(tapis)) {
                     currPlayer = this.getNextPlayer(currPlayer);
+                    System.out.println("next player to play is "+currPlayer);
                 } else {
-                    tapis = Collections.emptyList();
+                    tapis.removeAll(tapis);
                 }
-
 
             }            
         //}
@@ -86,6 +101,10 @@ public abstract class PresidentGameEngine {
         System.out.println(winner + " is the PRESIDENT! ");
         System.exit(0);
     }
+
+
+
+    protected abstract void removeFromPlayerHand(String currPlayer, List<Card> playedCardByPlayer);
 
 
 
@@ -100,7 +119,7 @@ public abstract class PresidentGameEngine {
      *
      * @return the number of player still playing to the game
      */
-    protected abstract int getCurrentPlayerCount(Queue<String> player);
+    protected abstract int getCurrentPlayerCount(List<String> player);
 
     /**
      *
@@ -137,7 +156,10 @@ public abstract class PresidentGameEngine {
 
     protected abstract String getTrou();
 
-
+    protected void printCards(List<Card> cards) {
+        System.out.println( cards.stream().map(c -> c.toFancyString()).collect(Collectors.joining(" ")));
+        System.out.println();
+    }
 
     protected abstract boolean getFirstParty(int [] numberParty);
 
