@@ -452,9 +452,9 @@ public class AppTest
         players.add("J1");
         players.add("J2");
         var test1 = new LocalPresidentGame(players);
-        Queue<String> player = new LinkedList<>();
-        player.offer("J1");
-        player.offer("J2");
+        List<String> player = new LinkedList<>();
+        player.add("J1");
+        player.add("J2");
         assertEquals(2, test1.getCurrentPlayerCount(player));
     }
     @Test
@@ -580,5 +580,12 @@ public class AppTest
         boolean result = !test1.isTapisFinished(tapis);
         assertTrue(result);
 
+    }
+
+    @Test 
+    public void getCardFromPlayer(){
+        HashSet<String> players = new HashSet<>();
+        var test1 = new LocalPresidentGame(players);
+        
     }
 }

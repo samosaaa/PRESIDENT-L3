@@ -199,15 +199,7 @@ public abstract class PresidentGameEngine {
      */
     protected abstract void declareWinner(String winner);
 
-    /**
-     * get a card from a player. If the player doesn't have a card, it will be declared loser and all the left over cards will be given to his opponent
-     *
-     * @param leftOverCard               card left over from another round
-     * @param cardProviderPlayer         the player that should give a card
-     * @param cardProviderPlayerOpponent the Opponent of this player
-     * @return a card of null if player cardProviderPlayer is gameover
-     */
-    protected abstract Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer, String cardProviderPlayerOpponent);
+
 
     /**
      * give the winner of a round

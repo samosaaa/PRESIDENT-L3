@@ -65,18 +65,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
         System.out.println(winner + " has won!");
     }
 
-    @Override
-    protected Card getCardOrGameOver(Collection<Card> leftOverCard, String cardProviderPlayer,
-            String cardProviderPlayerOpponent) {
 
-        if (!this.playerCards.containsKey(cardProviderPlayer) || this.playerCards.get(cardProviderPlayer).isEmpty()) {
-            this.playerCards.get(cardProviderPlayerOpponent).addAll(leftOverCard);
-            this.playerCards.remove(cardProviderPlayer);
-            return null;
-        } else {
-            return ((Queue<Card>) this.playerCards.get(cardProviderPlayer)).poll();
-        }
-    }
 
     @Override
     protected void giveCardsToPlayer(Collection<Card> roundStack, String winner) {
@@ -300,7 +289,7 @@ public class LocalPresidentGame extends PresidentGameEngine {
                     if (!playerCardBrelon.contains(playersHand.get(i))) {
                         if (playerCardBrelon.contains(playersHand.get(j))) {
                             playerCardBrelon.add(playersHand.get(i));
-                            //playerCardBrelon.remove(playersHand.get(j));
+                            playerCardBrelon.remove(playersHand.get(j));
                         }
                     }
                 }
